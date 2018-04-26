@@ -265,65 +265,6 @@ Item {
             }
 
 
-            AreaSeries {
-
-                name: "Mobility Bereich"
-
-                upperSeries: LineSeries {
-                    id: minMobilitySeries
-
-
-                    property int columnNumber: 6
-                    property QtObject dataSeries: houshold.getDataSeries(columnNumber)
-
-                    Connections {
-                        target: houshold.getDataSeries(minMobilitySeries.columnNumber)
-                        onDataChanged: {
-                            console.log("x = " + x + " | y = " + y)
-                            minMobilitySeries.append(x, y)
-                        }
-                    }
-
-                    Connections {
-                        target: engine
-                        onReset: minMobilitySeries.clear()
-                    }
-
-                    name: dataSeries.name
-                    axisX: timeAxis2
-                    axisYRight: percentageAxis
-
-                    Component.onCompleted: minMobilitySeries.append(0, dataSeries.getValueAt(0))
-                }
-
-                lowerSeries: LineSeries {
-                    id: maxMobilitySeries
-
-                    property int columnNumber: 7
-                    property QtObject dataSeries: houshold.getDataSeries(columnNumber)
-
-                    Connections {
-                        target: houshold.getDataSeries(maxMobilitySeries.columnNumber)
-                        onDataChanged: {
-                            console.log("x = " + x + " | y = " + y)
-                            maxMobilitySeries.append(x, y)
-                        }
-                    }
-
-                    Connections {
-                        target: engine
-                        onReset: maxMobilitySeries.clear()
-                    }
-
-                    name: dataSeries.name
-                    axisX: timeAxis2
-                    axisYRight: percentageAxis
-
-                    Component.onCompleted: maxMobilitySeries.append(0, dataSeries.getValueAt(0))
-                }
-            }
-
-
             // Außentemperatur
             LineSeries {
                 id: outsideTemperatureSeries
@@ -447,6 +388,65 @@ Item {
                 titleText: "Mobility [%]"
                 gridVisible: false
             }
+
+
+//            AreaSeries {
+
+//                name: "Mobility Bereich"
+
+//                upperSeries: LineSeries {
+//                    id: minMobilitySeries
+
+
+//                    property int columnNumber: 6
+//                    property QtObject dataSeries: houshold.getDataSeries(columnNumber)
+
+//                    Connections {
+//                        target: houshold.getDataSeries(minMobilitySeries.columnNumber)
+//                        onDataChanged: {
+//                            console.log("x = " + x + " | y = " + y)
+//                            minMobilitySeries.append(x, y)
+//                        }
+//                    }
+
+//                    Connections {
+//                        target: engine
+//                        onReset: minMobilitySeries.clear()
+//                    }
+
+//                    name: dataSeries.name
+//                    axisX: timeAxis2
+//                    axisYRight: percentageAxis
+
+//                    Component.onCompleted: minMobilitySeries.append(0, dataSeries.getValueAt(0))
+//                }
+
+//                lowerSeries: LineSeries {
+//                    id: maxMobilitySeries
+
+//                    property int columnNumber: 7
+//                    property QtObject dataSeries: houshold.getDataSeries(columnNumber)
+
+//                    Connections {
+//                        target: houshold.getDataSeries(maxMobilitySeries.columnNumber)
+//                        onDataChanged: {
+//                            console.log("x = " + x + " | y = " + y)
+//                            maxMobilitySeries.append(x, y)
+//                        }
+//                    }
+
+//                    Connections {
+//                        target: engine
+//                        onReset: maxMobilitySeries.clear()
+//                    }
+
+//                    name: dataSeries.name
+//                    axisX: timeAxis2
+//                    axisYRight: percentageAxis
+
+//                    Component.onCompleted: maxMobilitySeries.append(0, dataSeries.getValueAt(0))
+//                }
+//            }
 
 
 
