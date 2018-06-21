@@ -56,7 +56,7 @@ void DataSeries::setCurrentValue(int timeSlot)
 
     double y = m_values.at(timeSlot);
 
-    qDebug() << "Value for" << name() << "changed" << y;
+    //qDebug() << "Value for" << name() << "changed" << y;
 
     if (y < m_minValue)
         setMinValue(y);

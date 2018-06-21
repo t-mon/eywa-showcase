@@ -53,6 +53,8 @@ private:
     void setTimeSlot(int timeSlot);
     void setProgress(double progress);
 
+    DataSeries *findDataSeries(const QString &name, const QList<DataSeries *> &seriesList);
+
 signals:
     void runningChanged();
     void timeSlotChanged();

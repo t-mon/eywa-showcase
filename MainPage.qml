@@ -7,6 +7,8 @@ import QtCharts 2.2
 Page {
     id: root
 
+    Component.onCompleted: engine.dataManager.refreshMock()
+
     ColumnLayout {
         anchors.fill: parent
 

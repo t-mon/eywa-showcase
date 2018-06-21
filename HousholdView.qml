@@ -20,485 +20,384 @@ Item {
         }
     }
 
-    ColumnLayout {
-        id: chartsColumn
+    Flickable {
+        id: flickable
         anchors.fill: parent
+        contentHeight: chartsColumn.height
+        clip: true
 
-        ChartView {
-            id: chartView
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-
-            animationDuration: settings.simulationSpeed
-            animationOptions: ChartView.SeriesAnimations
-            animationEasingCurve.type: Easing.Linear
-
-            legend.visible: true
-            legend.alignment: Qt.AlignBottom
-
-            theme: ChartView.ChartThemeDark
-
-            antialiasing: true
-
-            ValueAxis {
-                id: timeAxis
-                min: 0
-                max: 24
-                tickCount: 10
-                labelFormat: "%i"
-            }
-
-            // *********************************************************************
-            ValueAxis {
-                id: deviceState
-                min: -200
-                max: 200
-                titleText: "Status"
-                gridVisible: false
-                labelFormat: "%i"
-            }
+        ColumnLayout {
+            id: chartsColumn
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.top: parent.top
 
 
-            // Status battery
-            LineSeries {
-                id: statusBatterySeries
 
-                Connections {
-                    target: houshold
-                    onUpdated: {
-                        statusBatterySeries.dataSeries = houshold.getDataSeries(1, "Zeitslot")
-                        dataConnection.target = dataSeries
 
+            ChartView {
+                id: chartView
+                Layout.preferredHeight: flickable.height / 2
+                Layout.fillWidth: true
+
+                animationDuration: engine.simulationSpeed
+                    animationOptions: ChartView.SeriesAnimations
+                animationEasingCurve.type: Easing.Linear
+
+                legend.visible: true
+                legend.alignment: Qt.AlignBottom
+
+                theme: ChartView.ChartThemeDark
+
+                //                antialiasing: true
+
+                ValueAxis {
+                    id: timeAxis
+                    min: 0
+                    max: 23
+                    tickCount: 10
+                    labelFormat: "%i"
+                }
+
+                ValueAxis {
+                    id: priceAxis
+                    min: -5
+                    max: 20
+                    titleText: "Preis [€/kWh]"
+                    gridVisible: false
+                    labelFormat: "%i"
+                }
+
+                // "Netzpreis [€/kWh]"
+                AreaSeries {
+                    id: networkPriceArea
+                    name: "Netzpreis [€/kWh]"
+                    axisX: timeAxis
+                    axisY: priceAxis
+                    opacity: 0.5
+                    upperSeries: LineSeries {
+                        id: networkPriceSeries
+
+                        Connections {
+                            target: houshold
+                            onUpdated: {
+                                networkPriceSeries.dataSeries = houshold.getDataSeries(1, "Netzpreis [€/kWh]")
+                                //networkPriceSeries.append(0,0)
+                            }
+                        }
+
+                        property QtObject dataSeries: null
+
+                        Connections {
+                            target: networkPriceSeries.dataSeries
+                            onDataChanged: {
+                                networkPriceSeries.append(x, y)
+                            }
+                        }
+
+                        Connections {
+                            target: engine
+                            onReset: networkPriceSeries.clear()
+                        }
+                    }
+
+                    lowerSeries: LineSeries {
+                        id: networkPriceLowerSeries
+
+                        Connections {
+                            target: houshold
+                            onUpdated: {
+                                networkPriceLowerSeries.dataSeries = houshold.getDataSeries(1, "Netzpreis [€/kWh]")
+                                //networkPriceLowerSeries.append(0,0)
+                            }
+                        }
+
+                        property QtObject dataSeries: null
+
+                        Connections {
+                            target: networkPriceLowerSeries.dataSeries
+                            onDataChanged: {
+                                networkPriceLowerSeries.append(x, 0)
+                            }
+                        }
+
+                        Connections {
+                            target: engine
+                            onReset: networkPriceLowerSeries.clear()
+                        }
                     }
                 }
 
-                property QtObject dataSeries: houshold.getDataSeries(1, "Zeitslot")
 
-                Connections {
-                    id: dataConnection
-                    target: dataSeries
-                    onDataChanged: {
-                        console.log("x = " + x + " | y = " + y)
-                        statusBatterySeries.append(x, y)
-                        print("----------------")
+                // Energiepreis [€/kWh]
+                AreaSeries {
+                    id: energyPriceArea
+                    name: "Energiepreis [€/kWh]"
+                    axisX: timeAxis
+                    axisY: priceAxis
+                    opacity: 0.5
+
+                    upperSeries: LineSeries {
+                        id: energyPriceSummSeries
+                        name: dataSeries.name
+
+                        Connections {
+                            target: houshold
+                            onUpdated: {
+                                energyPriceSummSeries.dataSeries = houshold.getDataSeries(1, "Bezugspreis Brutto [€/kWh]")
+                                //energyPriceSummSeries.append(0,0)
+                            }
+                        }
+
+                        property QtObject dataSeries: null
+
+                        Connections {
+                            target: energyPriceSummSeries.dataSeries
+                            onDataChanged: {
+                                energyPriceSummSeries.append(x, y)
+                            }
+                        }
+
+                        Connections {
+                            target: engine
+                            onReset: energyPriceSummSeries.clear()
+                        }
+                    }
+
+                    lowerSeries: LineSeries {
+                        id: energyPriceLowerSeries
+
+                        Connections {
+                            target: houshold
+                            onUpdated: {
+                                energyPriceLowerSeries.dataSeries = houshold.getDataSeries(1, "Netzpreis [€/kWh]")
+                                energyPriceLowerSeries.append(0,0)
+                            }
+                        }
+
+                        property QtObject dataSeries: null
+
+                        Connections {
+                            target: energyPriceLowerSeries.dataSeries
+                            onDataChanged: {
+                                energyPriceLowerSeries.append(x, y)
+                            }
+                        }
+
+                        Connections {
+                            target: engine
+                            onReset: energyPriceLowerSeries.clear()
+                        }
                     }
                 }
 
-                Connections {
-                    target: engine
-                    onReset: statusBatterySeries.clear()
+
+
+                // Einspeisetarif [€/kWh] (Column V)
+                LineSeries {
+                    id: einspeiseTarifSeries
+                    name: dataSeries.name
+                    axisX: timeAxis
+                    axisY: priceAxis
+
+                    Connections {
+                        target: houshold
+                        onUpdated: {
+                            einspeiseTarifSeries.dataSeries = houshold.getDataSeries(1, "Einspeisetarif [€/kWh]")
+                            //einspeiseTarifSeries.append(0,0)
+                        }
+                    }
+
+                    property QtObject dataSeries: null
+
+                    Connections {
+                        target: einspeiseTarifSeries.dataSeries
+                        onDataChanged: {
+                            einspeiseTarifSeries.append(x, y)
+                        }
+                    }
+
+                    Connections {
+                        target: engine
+                        onReset: einspeiseTarifSeries.clear()
+                    }
                 }
 
-                name: dataSeries.name
-                axisX: timeAxis
-                axisY: deviceState
+                // "Bezugspreis Brutto [€/kWh]" (Column U + T)
+                LineSeries {
+                    id: bezugspreisBruttoSeries
+                    name: dataSeries.name
+                    axisX: timeAxis
+                    axisY: priceAxis
 
-                Component.onCompleted: statusBatterySeries.append(0,0)
+                    width: 3
+                    color: "red"
+
+                    Connections {
+                        target: houshold
+                        onUpdated: {
+                            bezugspreisBruttoSeries.dataSeries = houshold.getDataSeries(1, "Bezugspreis Brutto [€/kWh]")
+                            //bezugspreisBruttoSeries.append(0,0)
+                        }
+                    }
+
+                    property QtObject dataSeries: null
+
+                    Connections {
+                        target: bezugspreisBruttoSeries.dataSeries
+                        onDataChanged: {
+                            bezugspreisBruttoSeries.append(x, y)
+                        }
+                    }
+
+                    Connections {
+                        target: engine
+                        onReset: bezugspreisBruttoSeries.clear()
+                    }
+                }
             }
 
 
 
 
-//            // E Car
-//            LineSeries {
-//                id: timeSeries
-
-//                property QtObject dataSeries: houshold.getDataSeries(1, "Zeitslot")
-
-//                Connections {
-//                    target: houshold.getDataSeries(statusWPSeries.columnNumber)
-//                    onDataChanged: {
-//                        console.log("x = " + x + " | y = " + y)
-//                        statusWPSeries.append(x, y)
-//                    }
-//                }
-
-//                Connections {
-//                    target: dataSeries
-//                    onDataChanged: {
-//                        console.log("x = " + x + " | y = " + y)
-//                        ecarSeries.append(x, y)
-//                    }
-//                }
-
-//                Connections {
-//                    target: engine
-//                    onReset: timeSeries.clear()
-//                }
-
-//                name: dataSeries.name
-//                axisX: timeAxis
-//                axisY: deviceState
-
-//                Component.onCompleted: timeSeries.append(0,0)
-//            }
-
-            //            // Status WP
-            //            LineSeries {
-            //                id: statusWPSeries
-
-            //                property int columnNumber: 13
-            //                property QtObject dataSeries: houshold.getDataSeries(1, "Zeitslot")
-
-            //                Connections {
-            //                    target: houshold.getDataSeries(statusWPSeries.columnNumber)
-            //                    onDataChanged: {
-            //                        console.log("x = " + x + " | y = " + y)
-            //                        statusWPSeries.append(x, y)
-            //                    }
-            //                }
-
-            //                Connections {
-            //                    target: engine
-            //                    onReset: statusWPSeries.clear()
-            //                }
-
-            //                name: dataSeries.name
-            //                axisX: timeAxis
-            //                axisY: deviceState
-
-            //                Component.onCompleted: statusWPSeries.append(0,0)
-            //            }
 
 
-            //            // *********************************************************************
-            //            // Costs
-            //            ValueAxis {
-            //                id: costsAxis
-            //                min: 0
-            //                max: 30
-            //                gridVisible: false
-            //                titleText: "€"
-            //                labelFormat: "%i"
-            //            }
 
-            //            // Energy costs
-            //            LineSeries {
-            //                id: energyCostsSeries
+            ChartView {
+                id: chartView2
+                Layout.preferredHeight: flickable.height / 2
+                Layout.fillWidth: true
 
-            //                property int columnNumber: 15
-            //                property QtObject dataSeries: houshold.getDataSeries(columnNumber)
+                legend.visible: true
+                legend.alignment: Qt.AlignBottom
 
-            //                Connections {
-            //                    target: houshold.getDataSeries(energyCostsSeries.columnNumber)
-            //                    onDataChanged: {
-            //                        console.log("x = " + x + " | y = " + y)
-            //                        energyCostsSeries.append(x, y)
-            //                    }
-            //                }
+                theme: ChartView.ChartThemeDark
 
-            //                Connections {
-            //                    target: engine
-            //                    onReset: energyCostsSeries.clear()
-            //                }
+                ValueAxis {
+                    id: energyAxis
+                    min: 0
+                    max: 18
+                    titleText: "Energie [kW]"
+                    gridVisible: false
+                    labelFormat: "%i"
+                }
 
-            //                name: dataSeries.name
-            //                axisX: timeAxis
-            //                axisYRight: costsAxis
+                ValueAxis {
+                    id: timeAxis2
+                    min: 0
+                    max: 23
+                    tickCount: 10
+                    labelFormat: "%i"
+                }
 
-            //                Component.onCompleted: energyCostsSeries.append(0,0)
-            //            }
 
-            //            // Netzpreis
-            //            LineSeries {
-            //                id: networkPriceSeries
 
-            //                property int columnNumber: 18
-            //                property QtObject dataSeries: houshold.getDataSeries(columnNumber)
+                AreaSeries {
+                    id: pvArea
+                    name: "PV-Produktion [kW]"
+                    axisX: timeAxis2
+                    axisY: energyAxis
+                    opacity: 0.5
+                    upperSeries: LineSeries {
+                        id: pvSeries
 
-            //                Connections {
-            //                    target: houshold.getDataSeries(networkPriceSeries.columnNumber)
-            //                    onDataChanged: {
-            //                        console.log("x = " + x + " | y = " + y)
-            //                        networkPriceSeries.append(x, y)
-            //                    }
-            //                }
+                        Connections {
+                            target: houshold
+                            onUpdated: {
+                                pvSeries.dataSeries = houshold.getDataSeries(1, "PV-Produktion [kW]")
+                                //networkPriceSeries.append(0,0)
+                            }
+                        }
 
-            //                Connections {
-            //                    target: engine
-            //                    onReset: networkPriceSeries.clear()
-            //                }
+                        property QtObject dataSeries: null
 
-            //                name: dataSeries.name
-            //                axisX: timeAxis
-            //                axisYRight: costsAxis
+                        Connections {
+                            target: pvSeries.dataSeries
+                            onDataChanged: {
+                                pvSeries.append(x, y)
+                            }
+                        }
 
-            //                Component.onCompleted: networkPriceSeries.append(0, dataSeries.getValueAt(0))
-            //            }
+                        Connections {
+                            target: engine
+                            onReset: pvSeries.clear()
+                        }
+                    }
 
-            //            // Energie preis
-            //            LineSeries {
-            //                id: energyPriceSeries
+                    lowerSeries: LineSeries {
+                        id: pvLowerSeries
 
-            //                property int columnNumber: 19
-            //                property QtObject dataSeries: houshold.getDataSeries(columnNumber)
+                        Connections {
+                            target: houshold
+                            onUpdated: {
+                                pvLowerSeries.dataSeries = houshold.getDataSeries(1, "PV-Produktion [kW]")
+                                //networkPriceLowerSeries.append(0,0)
+                            }
+                        }
 
-            //                Connections {
-            //                    target: houshold.getDataSeries(energyPriceSeries.columnNumber)
-            //                    onDataChanged: {
-            //                        console.log("x = " + x + " | y = " + y)
-            //                        energyPriceSeries.append(x, y)
-            //                    }
-            //                }
+                        property QtObject dataSeries: null
 
-            //                Connections {
-            //                    target: engine
-            //                    onReset: energyPriceSeries.clear()
-            //                }
+                        Connections {
+                            target: pvLowerSeries.dataSeries
+                            onDataChanged: {
+                                pvLowerSeries.append(x, 0)
+                            }
+                        }
 
-            //                name: dataSeries.name
-            //                axisX: timeAxis
-            //                axisYRight: costsAxis
+                        Connections {
+                            target: engine
+                            onReset: pvLowerSeries.clear()
+                        }
+                    }
+                }
 
-            //                Component.onCompleted: energyPriceSeries.append(0, dataSeries.getValueAt(0))
-            //            }
 
+
+                // "Gesamtverbrauch [kW]" (Column W)
+                LineSeries {
+                    id: gesamtverbrauchSeries
+                    name: dataSeries.name
+                    axisX: timeAxis2
+                    axisY: energyAxis
+
+                    width: 3
+                    color: "red"
+
+                    Connections {
+                        target: houshold
+                        onUpdated: {
+                            gesamtverbrauchSeries.dataSeries = houshold.getDataSeries(1, "Gesamtverbrauch [kW]")
+                        }
+                    }
+
+                    property QtObject dataSeries: null
+
+                    Connections {
+                        target: gesamtverbrauchSeries.dataSeries
+                        onDataChanged: {
+                            gesamtverbrauchSeries.append(x, y)
+                        }
+                    }
+
+                    Connections {
+                        target: engine
+                        onReset: gesamtverbrauchSeries.clear()
+                    }
+                }
+
+            }
+
+            ChartView {
+                id: chartView3
+                Layout.preferredHeight: flickable.height / 2
+                Layout.fillWidth: true
+
+                legend.visible: true
+                legend.alignment: Qt.AlignBottom
+
+                theme: ChartView.ChartThemeDark
+
+            }
         }
-
-        //        ChartView {
-        //            id: chartView2
-        //            Layout.fillHeight: true
-        //            Layout.fillWidth: true
-
-        //            animationDuration: settings.simulationSpeed
-        //            animationOptions: ChartView.SeriesAnimations
-        //            animationEasingCurve.type: Easing.Linear
-
-        //            theme: ChartView.ChartThemeDark
-
-        //            legend.visible: true
-        //            legend.alignment: Qt.AlignBottom
-
-        //            antialiasing: true
-
-        //            ValueAxis {
-        //                id: timeAxis2
-        //                min: 0
-        //                max: 24
-        //                tickCount: 10
-        //                labelFormat: "%i"
-        //            }
-
-        //            // *********************************************************************
-        //            ValueAxis {
-        //                id: temperatureAxis
-        //                min: 0
-        //                max: 50
-        //                titleText: "Temperature [°C]"
-        //                gridVisible: false
-        //            }
-
-
-        //            // Außentemperatur
-        //            LineSeries {
-        //                id: outsideTemperatureSeries
-
-        //                property int columnNumber: 1
-        //                property QtObject dataSeries: houshold.getDataSeries(1, "Zeitslot")
-
-        //                Connections {
-        //                    target: houshold.getDataSeries(outsideTemperatureSeries.columnNumber)
-        //                    onDataChanged: {
-        //                        console.log("x = " + x + " | y = " + y)
-        //                        outsideTemperatureSeries.append(x, y)
-        //                    }
-        //                }
-
-        //                Connections {
-        //                    target: engine
-        //                    onReset: outsideTemperatureSeries.clear()
-        //                }
-
-        //                name: dataSeries.name
-        //                axisX: timeAxis2
-        //                axisY: temperatureAxis
-
-        //                Component.onCompleted: outsideTemperatureSeries.append(0, dataSeries.getValueAt(0))
-        //            }
-
-
-
-        //            AreaSeries {
-
-        //                name: "Temperatur Bereich"
-
-        //                upperSeries: LineSeries {
-        //                    id: minSeries
-
-
-        //                    property int columnNumber: 8
-        //                    property QtObject dataSeries: houshold.getDataSeries(columnNumber)
-
-        //                    Connections {
-        //                        target: houshold.getDataSeries(minSeries.columnNumber)
-        //                        onDataChanged: {
-        //                            console.log("x = " + x + " | y = " + y)
-        //                            minSeries.append(x, y)
-        //                        }
-        //                    }
-
-        //                    Connections {
-        //                        target: engine
-        //                        onReset: minSeries.clear()
-        //                    }
-
-        //                    name: dataSeries.name
-        //                    axisX: timeAxis2
-        //                    axisY: temperatureAxis
-
-        //                    Component.onCompleted: minSeries.append(0, dataSeries.getValueAt(0))
-        //                }
-
-        //                lowerSeries: LineSeries {
-        //                    id: maxSeries
-
-        //                    property int columnNumber: 9
-        //                    property QtObject dataSeries: houshold.getDataSeries(columnNumber)
-
-        //                    Connections {
-        //                        target: houshold.getDataSeries(maxSeries.columnNumber)
-        //                        onDataChanged: {
-        //                            console.log("x = " + x + " | y = " + y)
-        //                            maxSeries.append(x, y)
-        //                        }
-        //                    }
-
-        //                    Connections {
-        //                        target: engine
-        //                        onReset: maxSeries.clear()
-        //                    }
-
-        //                    name: dataSeries.name
-        //                    axisX: timeAxis2
-        //                    axisY: temperatureAxis
-
-        //                    Component.onCompleted: maxSeries.append(0, dataSeries.getValueAt(0))
-        //                }
-        //            }
-
-        //            LineSeries {
-        //                id: istSeries
-
-        //                property int columnNumber: 16
-        //                property QtObject dataSeries: houshold.getDataSeries(columnNumber)
-
-        //                Connections {
-        //                    target: houshold.getDataSeries(istSeries.columnNumber)
-        //                    onDataChanged: {
-        //                        console.log("x = " + x + " | y = " + y)
-        //                        istSeries.append(x, y)
-        //                    }
-        //                }
-
-        //                Connections {
-        //                    target: engine
-        //                    onReset: istSeries.clear()
-        //                }
-
-        //                name: dataSeries.name
-        //                axisX: timeAxis2
-        //                axisY: temperatureAxis
-
-        //                Component.onCompleted: istSeries.append(0, dataSeries.getValueAt(0))
-        //            }
-
-
-
-        ////            // *********************************************************************
-        ////            ValueAxis {
-        ////                id: percentageAxis
-        ////                min: 0
-        ////                max: 100
-        ////                titleText: "Mobility [%]"
-        ////                gridVisible: false
-        ////            }
-
-
-        ////            AreaSeries {
-
-        ////                name: "Mobility Bereich"
-
-        ////                upperSeries: LineSeries {
-        ////                    id: minMobilitySeries
-
-
-        ////                    property int columnNumber: 6
-        ////                    property QtObject dataSeries: houshold.getDataSeries(columnNumber)
-
-        ////                    Connections {
-        ////                        target: houshold.getDataSeries(minMobilitySeries.columnNumber)
-        ////                        onDataChanged: {
-        ////                            console.log("x = " + x + " | y = " + y)
-        ////                            minMobilitySeries.append(x, y)
-        ////                        }
-        ////                    }
-
-        ////                    Connections {
-        ////                        target: engine
-        ////                        onReset: minMobilitySeries.clear()
-        ////                    }
-
-        ////                    name: dataSeries.name
-        ////                    axisX: timeAxis2
-        ////                    axisYRight: percentageAxis
-
-        ////                    Component.onCompleted: minMobilitySeries.append(0, dataSeries.getValueAt(0))
-        ////                }
-
-        ////                lowerSeries: LineSeries {
-        ////                    id: maxMobilitySeries
-
-        ////                    property int columnNumber: 7
-        ////                    property QtObject dataSeries: houshold.getDataSeries(columnNumber)
-
-        ////                    Connections {
-        ////                        target: houshold.getDataSeries(maxMobilitySeries.columnNumber)
-        ////                        onDataChanged: {
-        ////                            console.log("x = " + x + " | y = " + y)
-        ////                            maxMobilitySeries.append(x, y)
-        ////                        }
-        ////                    }
-
-        ////                    Connections {
-        ////                        target: engine
-        ////                        onReset: maxMobilitySeries.clear()
-        ////                    }
-
-        ////                    name: dataSeries.name
-        ////                    axisX: timeAxis2
-        ////                    axisYRight: percentageAxis
-
-        ////                    Component.onCompleted: maxMobilitySeries.append(0, dataSeries.getValueAt(0))
-        ////                }
-        ////            }
-
-
-
-        ////            LineSeries {
-        ////                id: istMobilitySeries
-
-        ////                property int columnNumber: 17
-        ////                property QtObject dataSeries: houshold.getDataSeries(columnNumber)
-
-        ////                Connections {
-        ////                    target: houshold.getDataSeries(istMobilitySeries.columnNumber)
-        ////                    onDataChanged: {
-        ////                        console.log("x = " + x + " | y = " + y)
-        ////                        istMobilitySeries.append(x, y)
-        ////                    }
-        ////                }
-
-        ////                Connections {
-        ////                    target: engine
-        ////                    onReset: istMobilitySeries.clear()
-        ////                }
-
-        ////                name: dataSeries.name
-        ////                axisX: timeAxis2
-        ////                axisYRight: percentageAxis
-
-        ////                Component.onCompleted: istMobilitySeries.append(0, dataSeries.getValueAt(0))
-        ////            }
-        //        }
     }
 }

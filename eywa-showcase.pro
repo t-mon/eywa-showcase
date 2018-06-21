@@ -8,7 +8,8 @@ HEADERS += \
     dataseries.h \
     logmessage.h \
     dataiteration.h \
-    dataiterations.h
+    dataiterations.h \
+    logentry.h
 
 SOURCES += \
     main.cpp \
@@ -18,7 +19,8 @@ SOURCES += \
     dataseries.cpp \
     logmessage.cpp \
     dataiteration.cpp \
-    dataiterations.cpp
+    dataiterations.cpp \
+    logentry.cpp
 
 RESOURCES += qml.qrc icons.qrc data.qrc
 

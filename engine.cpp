@@ -25,6 +25,9 @@ Engine::Engine(QObject *parent) : QObject(parent)
     m_timer->setInterval(m_simulationSpeed);
 
     connect(m_timer, &QTimer::timeout, this, &Engine::onTick);
+
+    // FIXME
+    m_dataManager->refreshMock();
 }
 
 DataManager *Engine::dataManager()
@@ -79,13 +82,24 @@ void Engine::setTimeSlot(int timeSlot)
     emit timeSlotChanged();
 
     // Calculate progress
-    setProgress(m_timeSlot * 100.0 / m_maxTimeSlots);
+    setProgress(m_timeSlot * 100.0 / m_maxTimeSlots - 1);
 }
 
 void Engine::setProgress(double progress)
 {
     m_progress = progress;
     emit progressChanged();
+}
+
+DataSeries *Engine::findDataSeries(const QString &name, const QList<DataSeries *> &seriesList)
+{
+    foreach (DataSeries *series, seriesList) {
+        if (series->name() == name) {
+            return series;
+        }
+    }
+
+    return nullptr;
 }
 
 void Engine::setRunning(bool running)
@@ -103,10 +117,7 @@ void Engine::onTick()
         return;
     }
 
-    int timeSlot = m_timeSlot + 1;
-    setTimeSlot(timeSlot);
-
-    qDebug() << "Tick:" << m_timeSlot << "/" << m_maxTimeSlots << "-->" << m_progress << "%";
+    qDebug() << "Tick:" << m_timeSlot << "/" << m_maxTimeSlots - 1 << "-->" << m_progress << "%";
     foreach (Houshold *houshold, m_housHolds) {
         houshold->setTimeSlot(m_timeSlot);
     }
@@ -116,6 +127,9 @@ void Engine::onTick()
     if (m_running) {
         m_timer->start(m_simulationSpeed);
     }
+
+    int timeSlot = m_timeSlot + 1;
+    setTimeSlot(timeSlot);
 }
 
 void Engine::onLogsReady(const QVariantList &logsList)
@@ -167,6 +181,26 @@ void Engine::onResultsReady(const QVariantList &resultsList)
             dataSeries->setValues(values);
             dataSeriesList.append(dataSeries);
         }
+
+        // Create custom series
+        DataSeries *energyPriceSeries = findDataSeries("Energiepreis [€/kWh]", dataSeriesList);
+        DataSeries *networkPriceSeries = findDataSeries("Netzpreis [€/kWh]", dataSeriesList);
+
+        // Energy price sum
+        if (energyPriceSeries && networkPriceSeries) {
+            DataSeries *priceSeries = new DataSeries(this);
+            priceSeries->setName("Bezugspreis Brutto [€/kWh]");
+            QList<double> newValues;
+            for (int i = 0; i < energyPriceSeries->values().count(); i++) {
+                newValues.append(energyPriceSeries->values().at(i) + networkPriceSeries->values().at(i));
+            }
+            priceSeries->setValues(newValues);
+            dataSeriesList.append(priceSeries);
+
+        } else {
+            qWarning() << "Could not find Energiepreis [€/kWh] or Netzpreis [€/kWh] series";
+        }
+
 
         DataIteration *iteration = new DataIteration(iterationNumber, this);
         iteration->setDataSeries(dataSeriesList);
