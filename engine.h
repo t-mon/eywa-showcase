@@ -4,18 +4,22 @@
 #include <QObject>
 #include <QTimer>
 
+#include "datamanager.h"
 #include "houshold.h"
 
 class Engine : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(bool running READ running NOTIFY runningChanged)
+    Q_PROPERTY(DataManager *dataManager READ dataManager CONSTANT)
     Q_PROPERTY(int timeSlot READ timeSlot NOTIFY timeSlotChanged)
     Q_PROPERTY(double progress READ progress NOTIFY progressChanged)
     Q_PROPERTY(int simulationSpeed READ simulationSpeed WRITE setSimulationSpeed NOTIFY simulationSpeedChanged)
 
 public:
     explicit Engine(QObject *parent = nullptr);
+
+    DataManager *dataManager();
 
     bool running();
     int timeSlot() const;
@@ -29,14 +33,20 @@ public:
 private:
     QTimer *m_timer = nullptr;
 
-    Houshold *m_housholdOne = nullptr;
-    Houshold *m_housholdTwo = nullptr;
+    DataManager *m_dataManager = nullptr;
+
+    Houshold *m_houshold1 = nullptr;
+    Houshold *m_houshold2 = nullptr;
+    Houshold *m_houshold3 = nullptr;
+    Houshold *m_houshold4 = nullptr;
+    Houshold *m_houshold5 = nullptr;
+
     QList<Houshold *> m_housHolds;
 
     bool m_running = false;
     int m_timeSlot = 0;
     int m_simulationSpeed = 500;
-    int m_maxTimeSlots = 96;
+    int m_maxTimeSlots = 24;
     double m_progress = 0;
 
     void setRunning(bool running);
@@ -54,6 +64,9 @@ signals:
 
 private slots:
     void onTick();
+
+    void onLogsReady(const QVariantList &logsList);
+    void onResultsReady(const QVariantList &resultsList);
 
 public slots:
     Q_INVOKABLE void play();

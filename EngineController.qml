@@ -51,9 +51,15 @@ Item {
 
             MouseArea {
                 anchors.fill: parent
-                onClicked: engine.running ? engine.pause() : engine.play()
-            }
+                onClicked: {
+                    if (engine.running) {
+                        engine.pause()
+                    } else {
+                        engine.play();
+                    }
 
+                }
+            }
         }
 
         Rectangle {
@@ -74,6 +80,20 @@ Item {
                 onClicked: engine.stop()
             }
 
+        }
+
+        Rectangle {
+            id: refreshButton
+            width: 40
+            height: width
+            radius: height / 8
+            color: "gray"
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: engine.dataManager.refreshMock()
+
+            }
         }
 
         ProgressBar {

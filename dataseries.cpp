@@ -1,5 +1,7 @@
 #include "dataseries.h"
 
+#include <QDebug>
+
 DataSeries::DataSeries(QObject *parent) : QObject(parent)
 {
 
@@ -53,6 +55,8 @@ void DataSeries::setCurrentValue(int timeSlot)
     Q_ASSERT(timeSlot < m_values.count());
 
     double y = m_values.at(timeSlot);
+
+    qDebug() << "Value for" << name() << "changed" << y;
 
     if (y < m_minValue)
         setMinValue(y);

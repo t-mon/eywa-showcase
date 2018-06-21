@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QLineSeries>
 
-#include "dataseries.h"
+#include "dataiteration.h"
 
 class Houshold : public QObject
 {
@@ -12,21 +12,27 @@ class Houshold : public QObject
     Q_PROPERTY(QString name READ name CONSTANT)
 
 public:
-    explicit Houshold(const QString &name, QObject *parent = nullptr);
+    explicit Houshold(const QString &name, int number, QObject *parent = nullptr);
 
     QString name() const;
+    int number() const;
 
-    Q_INVOKABLE DataSeries *getDataSeries(int column);
+    void reset();
+    void addIteration(DataIteration *dataIteration);
+
+    Q_INVOKABLE DataSeries *getDataSeries(int iterationNumber, QString name);
 
 private:
     QString m_name;
-    QList<DataSeries *> m_dataSeries;
+    int m_number = -1;
+    QList<DataIteration *> m_dataIterations;
 
 signals:
     void dataChanged(int row, double column, double value);
+    void updated();
+    void reseted();
 
 public slots:
-    void loadFile(const QString &fileName);
 
     void setTimeSlot(int timeSlot);
 

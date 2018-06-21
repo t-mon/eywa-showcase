@@ -2,5 +2,7 @@
     <qresource prefix="/">
         <file>data/houshold-1.csv</file>
         <file>data/houshold-2.csv</file>
+        <file>data/logs.json</file>
+        <file>data/results.json</file>
     </qresource>
 </RCC>

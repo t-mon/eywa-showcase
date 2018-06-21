@@ -4,20 +4,32 @@
 
 Engine::Engine(QObject *parent) : QObject(parent)
 {
-    m_housholdOne = new Houshold("Haushalt 1", this);
-    m_housholdOne->loadFile(":/data/houshold-1.csv");
+    m_dataManager = new DataManager(this);
+    connect(m_dataManager, &DataManager::logsRefreshed, this, &Engine::onLogsReady);
+    connect(m_dataManager, &DataManager::resultsRefreshed, this, &Engine::onResultsReady);
 
-    m_housholdTwo = new Houshold("Haushalt 2", this);
-    m_housholdTwo->loadFile(":/data/houshold-2.csv");
+    m_houshold1 = new Houshold("Haushalt 1", 1, this);
+    m_houshold2 = new Houshold("Haushalt 2", 2, this);
+    m_houshold3 = new Houshold("Haushalt 3", 3, this);
+    m_houshold4 = new Houshold("Haushalt 4", 4, this);
+    m_houshold5 = new Houshold("Haushalt 5", 5, this);
 
-    m_housHolds.append(m_housholdOne);
-    m_housHolds.append(m_housholdTwo);
+    m_housHolds.append(m_houshold1);
+    m_housHolds.append(m_houshold2);
+    m_housHolds.append(m_houshold3);
+    m_housHolds.append(m_houshold4);
+    m_housHolds.append(m_houshold5);
 
     m_timer = new QTimer(this);
     m_timer->setSingleShot(true);
     m_timer->setInterval(m_simulationSpeed);
 
     connect(m_timer, &QTimer::timeout, this, &Engine::onTick);
+}
+
+DataManager *Engine::dataManager()
+{
+    return m_dataManager;
 }
 
 bool Engine::running()
@@ -44,17 +56,21 @@ void Engine::setSimulationSpeed(int simulationSpeed)
 {
     m_simulationSpeed = simulationSpeed;
 
-
-
     emit simulationSpeedChanged();
 }
 
 Houshold *Engine::getHoushold(int number)
 {
-    Q_ASSERT(number < m_housHolds.count());
+    Q_ASSERT(number <= m_housHolds.count());
     qDebug() << "Get houshold" << number;
 
-    return m_housHolds.at(number);
+    foreach (Houshold *houshold, m_housHolds) {
+        if (houshold->number() == number) {
+            return houshold;
+        }
+    }
+
+    return nullptr;
 }
 
 void Engine::setTimeSlot(int timeSlot)
@@ -99,6 +115,64 @@ void Engine::onTick()
 
     if (m_running) {
         m_timer->start(m_simulationSpeed);
+    }
+}
+
+void Engine::onLogsReady(const QVariantList &logsList)
+{
+    foreach (const QVariant &logVariant, logsList) {
+        QVariantMap logMap = logVariant.toMap();
+
+        // Parse houshold, add them and sort them by timestamp
+
+
+
+    }
+}
+
+void Engine::onResultsReady(const QVariantList &resultsList)
+{
+    foreach (Houshold *houshold, m_housHolds) {
+        houshold->reset();
+    }
+
+    foreach (const QVariant &resultVariant, resultsList) {
+        QVariantMap resultMap = resultVariant.toMap();
+        qDebug() << "-----------------------------------------";
+
+        int housHoldNumber = resultMap.value("client").toString().remove("HH").toInt();
+        int iterationNumber = resultMap.value("iteration").toInt();
+
+        if (iterationNumber == 0)
+            continue;
+
+        qDebug() << "Parsing data for houshold" << housHoldNumber << "iteration:" << iterationNumber;
+        QVariantMap valuesMap = resultMap.value("values").toMap();
+
+        QList<DataSeries *> dataSeriesList;
+
+        foreach (const QString &value, valuesMap.keys()) {
+            DataSeries *dataSeries = new DataSeries(this);
+            dataSeries->setName(value);
+
+            QVariantList valueList = valuesMap.value(value).toList();
+            qDebug() << "    -> DataSeries:" << value;
+
+            QList<double> values;
+            for (int i = 0; i < valueList.count(); i++) {
+                values.append(valueList.value(i).toDouble());
+            }
+
+            //qDebug() << values;
+            dataSeries->setValues(values);
+            dataSeriesList.append(dataSeries);
+        }
+
+        DataIteration *iteration = new DataIteration(iterationNumber, this);
+        iteration->setDataSeries(dataSeriesList);
+
+        Houshold *houshold = getHoushold(housHoldNumber);
+        houshold->addIteration(iteration);
     }
 }
 

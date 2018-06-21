@@ -10,17 +10,54 @@ Page {
     ColumnLayout {
         anchors.fill: parent
 
+        TabBar {
+            id: bar
+            width: parent.width
+            Layout.fillWidth: true
+
+            TabButton {
+                text: qsTr("Haushalt 1")
+            }
+            TabButton {
+                text: qsTr("Haushalt 2")
+            }
+            TabButton {
+                text: qsTr("Haushalt 3")
+            }
+            TabButton {
+                text: qsTr("Haushalt 4")
+            }
+            TabButton {
+                text: qsTr("Haushalt 5")
+            }
+        }
+
+
         SwipeView {
             id: swipeView
             Layout.fillWidth: true
             Layout.fillHeight: true
 
-            HousholdView {
-                housholdNumber: 0
-            }
+            currentIndex: bar.currentIndex
 
             HousholdView {
                 housholdNumber: 1
+            }
+
+            HousholdView {
+                housholdNumber: 2
+            }
+
+            HousholdView {
+                housholdNumber: 3
+            }
+
+            HousholdView {
+                housholdNumber: 4
+            }
+
+            HousholdView {
+                housholdNumber: 5
             }
         }
 

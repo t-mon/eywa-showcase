@@ -5,14 +5,20 @@ HEADERS += \
     engine.h \
     datamanager.h \
     houshold.h \
-    dataseries.h
+    dataseries.h \
+    logmessage.h \
+    dataiteration.h \
+    dataiterations.h
 
 SOURCES += \
     main.cpp \
     engine.cpp \
     datamanager.cpp \
     houshold.cpp \
-    dataseries.cpp
+    dataseries.cpp \
+    logmessage.cpp \
+    dataiteration.cpp \
+    dataiterations.cpp
 
 RESOURCES += qml.qrc icons.qrc data.qrc
 
