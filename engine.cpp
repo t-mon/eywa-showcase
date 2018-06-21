@@ -202,6 +202,39 @@ void Engine::onResultsReady(const QVariantList &resultsList)
         }
 
 
+        DataSeries *housholdSeries = findDataSeries("Nicht steuerbar [kW]", dataSeriesList);
+        DataSeries *ecarSeries = findDataSeries("Verbrauch E-Auto [kW]", dataSeriesList);
+        DataSeries *batterySeries = findDataSeries("Verbrauch Batterie [kW]", dataSeriesList);
+
+        // Energy custom series
+        if (ecarSeries && housholdSeries && batterySeries) {
+
+            // Ecar + battery
+            DataSeries *housholdEcarSumSeries = new DataSeries(this);
+            housholdEcarSumSeries->setName("houshold + ecar");
+
+            QList<double> newValues;
+            for (int i = 0; i < housholdSeries->values().count(); i++) {
+                newValues.append(housholdSeries->values().at(i) + ecarSeries->values().at(i));
+            }
+            housholdEcarSumSeries->setValues(newValues);
+            dataSeriesList.append(housholdEcarSumSeries);
+
+            // houshold + Ecar + battery
+            DataSeries *housholdEcarBatterySumSeries = new DataSeries(this);
+            housholdEcarBatterySumSeries->setName("houshold + ecar + battery");
+
+            QList<double> newValuesFinal;
+            for (int i = 0; i < housholdEcarSumSeries->values().count(); i++) {
+                newValuesFinal.append(housholdEcarSumSeries->values().at(i) + batterySeries->values().at(i));
+            }
+            housholdEcarBatterySumSeries->setValues(newValuesFinal);
+            dataSeriesList.append(housholdEcarBatterySumSeries);
+
+        } else {
+            qWarning() << "Could not find create custom series for enery consumption";
+        }
+
         DataIteration *iteration = new DataIteration(iterationNumber, this);
         iteration->setDataSeries(dataSeriesList);
 

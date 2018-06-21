@@ -71,7 +71,7 @@ Item {
                 // "Netzpreis [€/kWh]"
                 AreaSeries {
                     id: networkPriceArea
-                    name: "Netzpreis [€/kWh]"
+                    name: "Netzpreis"
                     axisX: timeAxis
                     axisY: priceAxis
                     opacity: 0.5
@@ -132,14 +132,13 @@ Item {
                 // Energiepreis [€/kWh]
                 AreaSeries {
                     id: energyPriceArea
-                    name: "Energiepreis [€/kWh]"
+                    name: "Energiepreis"
                     axisX: timeAxis
                     axisY: priceAxis
                     opacity: 0.5
 
                     upperSeries: LineSeries {
                         id: energyPriceSummSeries
-                        name: dataSeries.name
 
                         Connections {
                             target: houshold
@@ -196,7 +195,7 @@ Item {
                 // Einspeisetarif [€/kWh] (Column V)
                 LineSeries {
                     id: einspeiseTarifSeries
-                    name: dataSeries.name
+                    name: "Einspeisetarif"
                     axisX: timeAxis
                     axisY: priceAxis
 
@@ -226,7 +225,7 @@ Item {
                 // "Bezugspreis Brutto [€/kWh]" (Column U + T)
                 LineSeries {
                     id: bezugspreisBruttoSeries
-                    name: dataSeries.name
+                    name: "Bezugspreis Brutto"
                     axisX: timeAxis
                     axisY: priceAxis
 
@@ -275,7 +274,7 @@ Item {
 
                 ValueAxis {
                     id: energyAxis
-                    min: 0
+                    min: -4
                     max: 18
                     titleText: "Energie [kW]"
                     gridVisible: false
@@ -294,7 +293,7 @@ Item {
 
                 AreaSeries {
                     id: pvArea
-                    name: "PV-Produktion [kW]"
+                    name: "PV-Produktion"
                     axisX: timeAxis2
                     axisY: energyAxis
                     opacity: 0.5
@@ -352,11 +351,197 @@ Item {
                 }
 
 
+                AreaSeries {
+                    id: housholdArea
+                    name: "Nicht steuerbar"
+                    axisX: timeAxis2
+                    axisY: energyAxis
+                    opacity: 0.5
+                    upperSeries: LineSeries {
+                        id: housholdSeries
+
+                        Connections {
+                            target: houshold
+                            onUpdated: {
+                                housholdSeries.dataSeries = houshold.getDataSeries(1, "Nicht steuerbar [kW]")
+                                //networkPriceSeries.append(0,0)
+                            }
+                        }
+
+                        property QtObject dataSeries: null
+
+                        Connections {
+                            target: housholdSeries.dataSeries
+                            onDataChanged: {
+                                housholdSeries.append(x, y)
+                            }
+                        }
+
+                        Connections {
+                            target: engine
+                            onReset: housholdSeries.clear()
+                        }
+                    }
+
+                    lowerSeries: LineSeries {
+                        id: housholdLowerSeries
+
+                        Connections {
+                            target: houshold
+                            onUpdated: {
+                                housholdLowerSeries.dataSeries = houshold.getDataSeries(1, "Nicht steuerbar [kW]")
+                                //networkPriceLowerSeries.append(0,0)
+                            }
+                        }
+
+                        property QtObject dataSeries: null
+
+                        Connections {
+                            target: housholdLowerSeries.dataSeries
+                            onDataChanged: {
+                                housholdLowerSeries.append(x, 0)
+                            }
+                        }
+
+                        Connections {
+                            target: engine
+                            onReset: housholdLowerSeries.clear()
+                        }
+                    }
+                }
+
+
+
+
+                // E-car
+                AreaSeries {
+                    id: housholdCarArea
+                    name: "E-Auto"
+                    axisX: timeAxis2
+                    axisY: energyAxis
+                    opacity: 0.5
+                    upperSeries: LineSeries {
+                        id: housholdCarSeries
+
+                        Connections {
+                            target: houshold
+                            onUpdated: {
+                                housholdCarSeries.dataSeries = houshold.getDataSeries(1, "houshold + ecar")
+                                //networkPriceSeries.append(0,0)
+                            }
+                        }
+
+                        property QtObject dataSeries: null
+
+                        Connections {
+                            target: housholdCarSeries.dataSeries
+                            onDataChanged: {
+                                housholdCarSeries.append(x, y)
+                            }
+                        }
+
+                        Connections {
+                            target: engine
+                            onReset: housholdCarSeries.clear()
+                        }
+                    }
+
+                    lowerSeries: LineSeries {
+                        id: housholdCarLowerSeries
+
+                        Connections {
+                            target: houshold
+                            onUpdated: {
+                                housholdCarLowerSeries.dataSeries = houshold.getDataSeries(1, "Nicht steuerbar [kW]")
+                                //networkPriceSeries.append(0,0)
+                            }
+                        }
+
+                        property QtObject dataSeries: null
+
+                        Connections {
+                            target: housholdCarLowerSeries.dataSeries
+                            onDataChanged: {
+                                housholdCarLowerSeries.append(x, y)
+                            }
+                        }
+
+                        Connections {
+                            target: engine
+                            onReset: housholdCarLowerSeries.clear()
+                        }
+                    }
+                }
+
+
+
+
+
+                // Battery
+                AreaSeries {
+                    id: housholdCarBatteryArea
+                    name: "Batterie"
+                    axisX: timeAxis2
+                    axisY: energyAxis
+                    opacity: 0.5
+                    upperSeries: LineSeries {
+                        id: housholdCarBatterySeries
+
+                        Connections {
+                            target: houshold
+                            onUpdated: {
+                                housholdCarBatterySeries.dataSeries = houshold.getDataSeries(1, "houshold + ecar + battery")
+                                //networkPriceSeries.append(0,0)
+                            }
+                        }
+
+                        property QtObject dataSeries: null
+
+                        Connections {
+                            target: housholdCarBatterySeries.dataSeries
+                            onDataChanged: {
+                                housholdCarBatterySeries.append(x, y)
+                            }
+                        }
+
+                        Connections {
+                            target: engine
+                            onReset: housholdCarBatterySeries.clear()
+                        }
+                    }
+
+                    lowerSeries: LineSeries {
+                        id: housholdCarBatteryLowerSeries
+
+                        Connections {
+                            target: houshold
+                            onUpdated: {
+                                housholdCarBatteryLowerSeries.dataSeries = houshold.getDataSeries(1, "houshold + ecar")
+                                //networkPriceSeries.append(0,0)
+                            }
+                        }
+
+                        property QtObject dataSeries: null
+
+                        Connections {
+                            target: housholdCarBatteryLowerSeries.dataSeries
+                            onDataChanged: {
+                                housholdCarBatteryLowerSeries.append(x, y)
+                            }
+                        }
+
+                        Connections {
+                            target: engine
+                            onReset: housholdCarBatteryLowerSeries.clear()
+                        }
+                    }
+                }
+
 
                 // "Gesamtverbrauch [kW]" (Column W)
                 LineSeries {
                     id: gesamtverbrauchSeries
-                    name: dataSeries.name
+                    name: "Gesamtverbrauch"
                     axisX: timeAxis2
                     axisY: energyAxis
 
@@ -384,8 +569,9 @@ Item {
                         onReset: gesamtverbrauchSeries.clear()
                     }
                 }
-
             }
+
+
 
             ChartView {
                 id: chartView3

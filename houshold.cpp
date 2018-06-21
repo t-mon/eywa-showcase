@@ -8,33 +8,6 @@ Houshold::Houshold(const QString &name, int number, QObject *parent) :
     m_name(name),
     m_number(number)
 {
-//    QStringList dataSeriesNames;
-//    dataSeriesNames << "Anwesenheit E-Auto [0/1]";
-//    dataSeriesNames << "Anwesenheit Temperatur [0/1]";
-//    dataSeriesNames << "Außentemperatur [°C]";
-//    dataSeriesNames << "Einspeisetarif [€/kWh]";
-//    dataSeriesNames << "Energiekosten [€/kWh]";
-//    dataSeriesNames << "Energiepreis [€/kWh]";
-//    dataSeriesNames << "";
-//    dataSeriesNames << "";
-//    dataSeriesNames << "";
-//    dataSeriesNames << "";
-//    dataSeriesNames << "";
-//    dataSeriesNames << "";
-//    dataSeriesNames << "";
-//    dataSeriesNames << "";
-//    dataSeriesNames << "";
-//    dataSeriesNames << "";
-//    dataSeriesNames << "";
-//    dataSeriesNames << "";
-//    dataSeriesNames << "";
-//    dataSeriesNames << "";
-//    dataSeriesNames << "";
-//    dataSeriesNames << "";
-//    dataSeriesNames << "";
-//    dataSeriesNames << "";
-//    dataSeriesNames << "";
-//    dataSeriesNames << "";
 
 }
 
