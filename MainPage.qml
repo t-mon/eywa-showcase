@@ -32,6 +32,9 @@ Page {
             TabButton {
                 text: qsTr("Haushalt 5")
             }
+            TabButton {
+                text: qsTr("Grid")
+            }
         }
 
         SwipeView {
@@ -62,6 +65,7 @@ Page {
             }
 
             GridView {
+
             }
         }
 

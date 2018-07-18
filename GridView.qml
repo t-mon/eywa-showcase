@@ -62,9 +62,6 @@ Item {
                 tickCount: 10
                 labelFormat: "%i"
             }
-
-
-
         }
     }
 }
