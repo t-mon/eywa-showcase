@@ -21,6 +21,11 @@ int Houshold::number() const
     return m_number;
 }
 
+int Houshold::iterationCount() const
+{
+    return m_dataIterations.count();
+}
+
 void Houshold::reset()
 {
     qDeleteAll(m_dataIterations);
@@ -43,7 +48,7 @@ DataSeries *Houshold::getDataSeries(int iterationNumber, QString name)
 
         foreach (DataSeries *dataSeries, iteration->dataSeries()) {
             if (dataSeries->name() == name) {
-                qDebug() << "Get time series" << dataSeries->name();
+                qDebug() << "-------------Get time series" << iterationNumber << name;
                 return dataSeries;
             }
         }

@@ -57,7 +57,6 @@ Item {
                     } else {
                         engine.play();
                     }
-
                 }
             }
         }
@@ -89,10 +88,28 @@ Item {
             radius: height / 8
             color: "gray"
 
+            Image {
+                anchors.fill: parent
+                anchors.margins: parent.height / 5
+                source: "icons/refresh.svg"
+            }
+
             MouseArea {
                 anchors.fill: parent
-                onClicked: engine.dataManager.refreshMock()
+                onClicked: engine.dataManager.refresh()
 
+            }
+        }
+
+        ComboBox {
+            id: iterationComboBox
+            model: engine.iterationCount
+            displayText: "Iteration: " + currentText
+            Layout.preferredWidth: 150
+
+            onCurrentIndexChanged: {
+                engine.currentIteration = currentIndex + 1
+                engine.stop()
             }
         }
 
@@ -106,6 +123,8 @@ Item {
                 NumberAnimation {}
             }
         }
+
+
 
     }
 }

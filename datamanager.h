@@ -21,7 +21,6 @@ public:
     void setPort(int port);
 
 
-    Q_INVOKABLE void refreshMock();
     Q_INVOKABLE void refresh();
 
 private:

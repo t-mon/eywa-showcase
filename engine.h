@@ -15,6 +15,8 @@ class Engine : public QObject
     Q_PROPERTY(int timeSlot READ timeSlot NOTIFY timeSlotChanged)
     Q_PROPERTY(double progress READ progress NOTIFY progressChanged)
     Q_PROPERTY(int simulationSpeed READ simulationSpeed WRITE setSimulationSpeed NOTIFY simulationSpeedChanged)
+    Q_PROPERTY(int iterationCount READ iterationCount NOTIFY iterationCountChanged)
+    Q_PROPERTY(int currentIteration READ currentIteration WRITE setCurrentIteration NOTIFY currentIterationChanged)
 
 public:
     explicit Engine(QObject *parent = nullptr);
@@ -25,8 +27,13 @@ public:
     int timeSlot() const;
     double progress() const;
 
+    int iterationCount() const;
+
     int simulationSpeed() const;
     void setSimulationSpeed(int simulationSpeed);
+
+    int currentIteration() const;
+    void setCurrentIteration(int iteration);
 
     Q_INVOKABLE Houshold *getHoushold(int number);
 
@@ -48,6 +55,8 @@ private:
     int m_simulationSpeed = 500;
     int m_maxTimeSlots = 24;
     double m_progress = 0;
+    int m_iterationCount = 0;
+    int m_currentIteration = 1;
 
     void setRunning(bool running);
     void setTimeSlot(int timeSlot);
@@ -60,6 +69,8 @@ signals:
     void timeSlotChanged();
     void progressChanged();
     void simulationSpeedChanged();
+    void iterationCountChanged(int iterationCount);
+    void currentIterationChanged(int iteration);
 
     void tick(int timeSlot);
     void reset();

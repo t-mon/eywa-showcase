@@ -50,6 +50,16 @@ void DataSeries::setValues(const QList<double> &values)
     m_values = values;
 }
 
+double DataSeries::getValue(int timeSlot)
+{
+    if (timeSlot >= m_values.count() || timeSlot < 0) {
+        qWarning() << "Out of range";
+        return 0;
+    }
+
+    return m_values.at(timeSlot);
+}
+
 void DataSeries::setCurrentValue(int timeSlot)
 {
     Q_ASSERT(timeSlot < m_values.count());

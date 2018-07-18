@@ -12,6 +12,7 @@ public:
 signals:
 
 public slots:
+
 };
 
 #endif // DATAITERATIONS_H

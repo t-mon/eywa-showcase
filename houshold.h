@@ -18,6 +18,7 @@ public:
     int number() const;
 
     void reset();
+    int iterationCount() const;
     void addIteration(DataIteration *dataIteration);
 
     Q_INVOKABLE DataSeries *getDataSeries(int iterationNumber, QString name);
@@ -26,6 +27,8 @@ private:
     QString m_name;
     int m_number = -1;
     QList<DataIteration *> m_dataIterations;
+
+    void setIterationCount(int iterationCount);
 
 signals:
     void dataChanged(int row, double column, double value);

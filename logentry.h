@@ -1,26 +1,26 @@
 #ifndef LOGENTRY_H
 #define LOGENTRY_H
 
-#include <QObject>
+#include <QString>
 
-class LogEntry: public QObject
+class LogEntry
 {
-    Q_OBJECT
 public:
-    enum MessageType {
-        MessageTypeInfo,
-        MessageTypeDebug
-    };
-    Q_ENUM(MessageType)
+    LogEntry();
 
-    LogEntry(QObject *parent = nullptr);
+    int timeStamp() const;
+    void setTimeStamp(int timestamp);
+
+    QString message() const;
+    void setMessage(const QString &message);
+
+    QString messageType() const;
+    void setMessageType(const QString &messageType);
 
 private:
     int m_timeStamp;
-    int m_housholdNumber;
-MessageType m_messageType;
-QString m_message;
-
+    QString m_messageType;
+    QString m_message;
 
 };
 

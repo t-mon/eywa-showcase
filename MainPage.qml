@@ -7,7 +7,7 @@ import QtCharts 2.2
 Page {
     id: root
 
-    Component.onCompleted: engine.dataManager.refreshMock()
+    Component.onCompleted: engine.dataManager.refresh()
 
     ColumnLayout {
         anchors.fill: parent
@@ -34,7 +34,6 @@ Page {
             }
         }
 
-
         SwipeView {
             id: swipeView
             Layout.fillWidth: true
@@ -60,6 +59,9 @@ Page {
 
             HousholdView {
                 housholdNumber: 5
+            }
+
+            GridView {
             }
         }
 

@@ -33,6 +33,7 @@ QString DataManager::hostAddress() const
 
 void DataManager::setHostAddress(const QString &hostAddress)
 {
+    qDebug() << "Set host address" << hostAddress;
     m_hostAddress = hostAddress;
     emit hostAddressChanged();
 }
@@ -48,20 +49,19 @@ void DataManager::setPort(int port)
     emit portChanged();
 }
 
-void DataManager::refreshMock()
-{
-    QVariantList logsList = loadJsonFile(":/data/logs.json").toList();
-    qDebug() << logsList;
-    emit logsRefreshed(logsList);
-
-    QVariantList resultsList = loadJsonFile(":/data/results.json").toList();
-    qDebug() << resultsList;
-    emit resultsRefreshed(resultsList);
-}
-
 void DataManager::refresh()
 {
-    qDebug() << "DataManager: refresh data";
+    // Dummy data
+
+    //    QVariantList logsList = loadJsonFile(":/data/logs.json").toList();
+    //    qDebug() << logsList;
+    //    emit logsRefreshed(logsList);
+
+    //    QVariantList resultsList = loadJsonFile(":/data/results.json").toList();
+    //    qDebug() << resultsList;
+    //    emit resultsRefreshed(resultsList);
+
+    qDebug() << "DataManager: refresh data" << m_hostAddress << m_port;
 
     QUrl url;
     url.setScheme("http");
@@ -116,9 +116,7 @@ void DataManager::onLogsReady()
     qDebug() << qUtf8Printable(jsonDoc.toJson(QJsonDocument::Indented));
 
     QVariantList logList = jsonDoc.toVariant().toList();
-
-    // TODO:
-
+    emit logsRefreshed(logList);
 }
 
 void DataManager::onResultsReady()
@@ -135,6 +133,8 @@ void DataManager::onResultsReady()
     QJsonDocument jsonDoc = QJsonDocument::fromJson(data);
     qDebug() << qUtf8Printable(jsonDoc.toJson(QJsonDocument::Indented));
 
-    // TODO:
+    QVariantList resultList = jsonDoc.toVariant().toList();
+    emit resultsRefreshed(resultList);
+
 }
 

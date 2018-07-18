@@ -27,7 +27,7 @@ Engine::Engine(QObject *parent) : QObject(parent)
     connect(m_timer, &QTimer::timeout, this, &Engine::onTick);
 
     // FIXME
-    m_dataManager->refreshMock();
+    m_dataManager->refresh();
 }
 
 DataManager *Engine::dataManager()
@@ -50,6 +50,11 @@ double Engine::progress() const
     return m_progress;
 }
 
+int Engine::iterationCount() const
+{
+    return m_iterationCount;
+}
+
 int Engine::simulationSpeed() const
 {
     return m_simulationSpeed;
@@ -62,10 +67,25 @@ void Engine::setSimulationSpeed(int simulationSpeed)
     emit simulationSpeedChanged();
 }
 
+int Engine::currentIteration() const
+{
+    return m_currentIteration;
+}
+
+void Engine::setCurrentIteration(int iteration)
+{
+    if (m_currentIteration == iteration)
+        return;
+
+    m_currentIteration = iteration;
+    qDebug() << "Current iteration changed" << m_currentIteration;
+    emit currentIterationChanged(m_currentIteration);
+}
+
 Houshold *Engine::getHoushold(int number)
 {
     Q_ASSERT(number <= m_housHolds.count());
-    qDebug() << "Get houshold" << number;
+    //qDebug() << "Get houshold" << number;
 
     foreach (Houshold *houshold, m_housHolds) {
         if (houshold->number() == number) {
@@ -150,9 +170,11 @@ void Engine::onResultsReady(const QVariantList &resultsList)
         houshold->reset();
     }
 
+    stop();
+
+    m_iterationCount = 0;
     foreach (const QVariant &resultVariant, resultsList) {
         QVariantMap resultMap = resultVariant.toMap();
-        qDebug() << "-----------------------------------------";
 
         int housHoldNumber = resultMap.value("client").toString().remove("HH").toInt();
         int iterationNumber = resultMap.value("iteration").toInt();
@@ -160,24 +182,29 @@ void Engine::onResultsReady(const QVariantList &resultsList)
         if (iterationNumber == 0)
             continue;
 
+        qDebug() << "-----------------------------------------";
+        DataIteration *iteration = new DataIteration(iterationNumber, this);
+
+
         qDebug() << "Parsing data for houshold" << housHoldNumber << "iteration:" << iterationNumber;
         QVariantMap valuesMap = resultMap.value("values").toMap();
 
         QList<DataSeries *> dataSeriesList;
 
         foreach (const QString &value, valuesMap.keys()) {
-            DataSeries *dataSeries = new DataSeries(this);
+            DataSeries *dataSeries = new DataSeries(iteration);
             dataSeries->setName(value);
 
             QVariantList valueList = valuesMap.value(value).toList();
-            qDebug() << "    -> DataSeries:" << value;
 
             QList<double> values;
             for (int i = 0; i < valueList.count(); i++) {
                 values.append(valueList.value(i).toDouble());
             }
 
-            //qDebug() << values;
+            if (housHoldNumber == 2)
+                qDebug() << "    -> " << dataSeries->name() << values;
+
             dataSeries->setValues(values);
             dataSeriesList.append(dataSeries);
         }
@@ -188,7 +215,7 @@ void Engine::onResultsReady(const QVariantList &resultsList)
 
         // Energy price sum
         if (energyPriceSeries && networkPriceSeries) {
-            DataSeries *priceSeries = new DataSeries(this);
+            DataSeries *priceSeries = new DataSeries(iteration);
             priceSeries->setName("Bezugspreis Brutto [€/kWh]");
             QList<double> newValues;
             for (int i = 0; i < energyPriceSeries->values().count(); i++) {
@@ -205,12 +232,13 @@ void Engine::onResultsReady(const QVariantList &resultsList)
         DataSeries *housholdSeries = findDataSeries("Nicht steuerbar [kW]", dataSeriesList);
         DataSeries *ecarSeries = findDataSeries("Verbrauch E-Auto [kW]", dataSeriesList);
         DataSeries *batterySeries = findDataSeries("Verbrauch Batterie [kW]", dataSeriesList);
+        DataSeries *heatpumpSeries = findDataSeries("Verbrauch WP [kW]", dataSeriesList);
 
         // Energy custom series
-        if (ecarSeries && housholdSeries && batterySeries) {
+        if (ecarSeries && housholdSeries && batterySeries && heatpumpSeries) {
 
             // Ecar + battery
-            DataSeries *housholdEcarSumSeries = new DataSeries(this);
+            DataSeries *housholdEcarSumSeries = new DataSeries(iteration);
             housholdEcarSumSeries->setName("houshold + ecar");
 
             QList<double> newValues;
@@ -221,7 +249,7 @@ void Engine::onResultsReady(const QVariantList &resultsList)
             dataSeriesList.append(housholdEcarSumSeries);
 
             // houshold + Ecar + battery
-            DataSeries *housholdEcarBatterySumSeries = new DataSeries(this);
+            DataSeries *housholdEcarBatterySumSeries = new DataSeries(iteration);
             housholdEcarBatterySumSeries->setName("houshold + ecar + battery");
 
             QList<double> newValuesFinal;
@@ -231,16 +259,39 @@ void Engine::onResultsReady(const QVariantList &resultsList)
             housholdEcarBatterySumSeries->setValues(newValuesFinal);
             dataSeriesList.append(housholdEcarBatterySumSeries);
 
+            // houshold + Ecar + battery + heatpump
+            DataSeries *housholdEcarBatteryHeatpumpSumSeries = new DataSeries(iteration);
+            housholdEcarBatteryHeatpumpSumSeries->setName("houshold + ecar + battery + heatpump");
+
+            QList<double> newValuesOthers;
+            for (int i = 0; i < housholdEcarBatterySumSeries->values().count(); i++) {
+                newValuesOthers.append(housholdEcarBatterySumSeries->values().at(i) + heatpumpSeries->values().at(i));
+            }
+            housholdEcarBatteryHeatpumpSumSeries->setValues(newValuesOthers);
+            dataSeriesList.append(housholdEcarBatteryHeatpumpSumSeries);
+
+
         } else {
             qWarning() << "Could not find create custom series for enery consumption";
-        }
+        }        
 
-        DataIteration *iteration = new DataIteration(iterationNumber, this);
         iteration->setDataSeries(dataSeriesList);
 
         Houshold *houshold = getHoushold(housHoldNumber);
         houshold->addIteration(iteration);
     }
+
+    int iterationCount = 0;
+
+    foreach (Houshold *houshold, m_housHolds) {
+        if (houshold->iterationCount() >= iterationCount) {
+            iterationCount = houshold->iterationCount();
+        }
+    }
+
+    m_iterationCount = iterationCount;
+    qDebug() << "Interation count changed" << m_iterationCount;
+    emit iterationCountChanged(m_iterationCount);
 }
 
 void Engine::play()
