@@ -6,12 +6,14 @@
 
 #include "datamanager.h"
 #include "houshold.h"
+#include "blocksproxy.h"
 
 class Engine : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(bool running READ running NOTIFY runningChanged)
     Q_PROPERTY(DataManager *dataManager READ dataManager CONSTANT)
+    Q_PROPERTY(BlocksProxy *blocksProxy READ blocksProxy CONSTANT)
     Q_PROPERTY(int timeSlot READ timeSlot NOTIFY timeSlotChanged)
     Q_PROPERTY(double progress READ progress NOTIFY progressChanged)
     Q_PROPERTY(int simulationSpeed READ simulationSpeed WRITE setSimulationSpeed NOTIFY simulationSpeedChanged)
@@ -22,6 +24,7 @@ public:
     explicit Engine(QObject *parent = nullptr);
 
     DataManager *dataManager();
+    BlocksProxy *blocksProxy();
 
     bool running();
     int timeSlot() const;
@@ -37,6 +40,7 @@ public:
 
     Q_INVOKABLE Houshold *getHoushold(int number);
 
+
 private:
     QTimer *m_timer = nullptr;
 
@@ -47,6 +51,9 @@ private:
     Houshold *m_houshold3 = nullptr;
     Houshold *m_houshold4 = nullptr;
     Houshold *m_houshold5 = nullptr;
+
+    Blocks *m_blocks = nullptr;
+    BlocksProxy *m_blocksProxy = nullptr;
 
     QList<Houshold *> m_housHolds;
 
@@ -80,6 +87,7 @@ private slots:
 
     void onLogsReady(const QVariantList &logsList);
     void onResultsReady(const QVariantList &resultsList);
+    void onBlocksReady(const QVariantList &blocksList);
 
 public slots:
     Q_INVOKABLE void play();

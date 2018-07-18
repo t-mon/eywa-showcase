@@ -23,10 +23,15 @@ public:
 
     Q_INVOKABLE DataSeries *getDataSeries(int iterationNumber, QString name);
 
+    LogEntries *logEntries();
+    Q_INVOKABLE LogEntriesProxy *logEntriesProxy();
+
 private:
     QString m_name;
     int m_number = -1;
     QList<DataIteration *> m_dataIterations;
+    LogEntries *m_logEntries = nullptr;
+    LogEntriesProxy *m_logEntriesProxy = nullptr;
 
     void setIterationCount(int iterationCount);
 

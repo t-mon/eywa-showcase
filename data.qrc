@@ -4,5 +4,6 @@
         <file>data/houshold-2.csv</file>
         <file>data/logs.json</file>
         <file>data/results.json</file>
+        <file>data/blocks.json</file>
     </qresource>
 </RCC>

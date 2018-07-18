@@ -4,6 +4,8 @@ import QtQuick.Controls.Material 2.2
 import QtQuick.Layouts 1.3
 import QtCharts 2.2
 
+import Eywa 1.0
+
 Item {
     id: root
 
@@ -26,13 +28,14 @@ Item {
             anchors.right: parent.right
             anchors.top: parent.top
 
+
             RowLayout {
                 Layout.fillWidth: true
 
                 Button {
                     Layout.fillWidth: true
                     text: "Logs"
-                    onClicked: stackView.push(Qt.resolvedUrl("LogsPage.qml"))
+                    onClicked: stackView.push(Qt.resolvedUrl("LogsPage.qml"), { housHold: root.houshold } )
                 }
             }
 

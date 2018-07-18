@@ -4,9 +4,15 @@
 
 Engine::Engine(QObject *parent) : QObject(parent)
 {
+    m_blocks = new Blocks(this);
+    m_blocksProxy = new BlocksProxy(this);
+
+    m_blocksProxy->setBlocks(m_blocks);
+
     m_dataManager = new DataManager(this);
     connect(m_dataManager, &DataManager::logsRefreshed, this, &Engine::onLogsReady);
     connect(m_dataManager, &DataManager::resultsRefreshed, this, &Engine::onResultsReady);
+    connect(m_dataManager, &DataManager::blocksRefreshed, this, &Engine::onBlocksReady);
 
     m_houshold1 = new Houshold("Haushalt 1", 1, this);
     m_houshold2 = new Houshold("Haushalt 2", 2, this);
@@ -33,6 +39,11 @@ Engine::Engine(QObject *parent) : QObject(parent)
 DataManager *Engine::dataManager()
 {
     return m_dataManager;
+}
+
+BlocksProxy *Engine::blocksProxy()
+{
+    return m_blocksProxy;
 }
 
 bool Engine::running()
@@ -96,6 +107,7 @@ Houshold *Engine::getHoushold(int number)
     return nullptr;
 }
 
+
 void Engine::setTimeSlot(int timeSlot)
 {
     m_timeSlot = timeSlot;
@@ -154,13 +166,30 @@ void Engine::onTick()
 
 void Engine::onLogsReady(const QVariantList &logsList)
 {
+    // Clear houshold logs
+    foreach (Houshold *houshold, m_housHolds) {
+        houshold->logEntries()->clearModel();
+    }
+
     foreach (const QVariant &logVariant, logsList) {
         QVariantMap logMap = logVariant.toMap();
 
         // Parse houshold, add them and sort them by timestamp
+        LogEntry *logEntry = new LogEntry();
+        logEntry->setMessage(logMap.value("msg").toString());
+        logEntry->setMessageType(logMap.value("t").toString());
+        logEntry->setTimeStamp(logMap.value("tstp").toInt());
 
+        int housholdNumber = logMap.value("client").toString().remove("HH").toInt();
 
+        Houshold *housHold = getHoushold(housholdNumber);
 
+        if (!housHold) {
+            qWarning() << "Could not find houshold for log" << logMap;
+            continue;
+        }
+
+        housHold->logEntries()->addLogEntry(logEntry);
     }
 }
 
@@ -292,6 +321,26 @@ void Engine::onResultsReady(const QVariantList &resultsList)
     m_iterationCount = iterationCount;
     qDebug() << "Interation count changed" << m_iterationCount;
     emit iterationCountChanged(m_iterationCount);
+}
+
+void Engine::onBlocksReady(const QVariantList &blocksList)
+{
+    m_blocks->clearModel();
+
+    foreach (const QVariant &blockVariant, blocksList) {
+        QVariantMap blockMap = blockVariant.toMap();
+
+        Block *block = new Block(m_blocks);
+        block->setMessage(blockMap.value("msg").toString());
+        block->setClient(blockMap.value("client").toString());
+        block->setNumber(blockMap.value("num").toInt());
+        block->setHash(blockMap.value("hash").toString());
+        block->setTimeStamp(blockMap.value("tstp").toInt());
+
+        qDebug() << "####### add block" << block->number() << block->message();
+
+        m_blocks->addBlock(block);
+    }
 }
 
 void Engine::play()

@@ -3,11 +3,15 @@
 
 #include <QObject>
 
+#include "logentries.h"
+#include "logentriesproxy.h"
+
 #include "dataseries.h"
 
 class DataIteration : public QObject
 {
     Q_OBJECT
+
 public:
     explicit DataIteration(int iterationNumber, QObject *parent = nullptr);
 
@@ -16,14 +20,12 @@ public:
     QList<DataSeries *> dataSeries() const;
     void setDataSeries(const QList<DataSeries *> dataSeries);
 
+
 private:
     int m_iterationNumber = -1;
+
     QList<DataSeries *> m_dataSeries;
 
-
-signals:
-
-public slots:
 };
 
 #endif // DATAITERATION_H

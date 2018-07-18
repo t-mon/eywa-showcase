@@ -8,7 +8,10 @@ Houshold::Houshold(const QString &name, int number, QObject *parent) :
     m_name(name),
     m_number(number)
 {
+    m_logEntries = new LogEntries(this);
+    m_logEntriesProxy = new LogEntriesProxy(this);
 
+    m_logEntriesProxy->setLogEntries(m_logEntries);
 }
 
 QString Houshold::name() const
@@ -56,6 +59,16 @@ DataSeries *Houshold::getDataSeries(int iterationNumber, QString name)
 
     qDebug() << "Could not find time series" << name << "for iteration" << iterationNumber;
     return nullptr;
+}
+
+LogEntries *Houshold::logEntries()
+{
+    return m_logEntries;
+}
+
+LogEntriesProxy *Houshold::logEntriesProxy()
+{
+    return m_logEntriesProxy;
 }
 
 //void Houshold::loadFile(const QString &fileName)

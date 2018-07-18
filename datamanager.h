@@ -20,7 +20,6 @@ public:
     int port() const;
     void setPort(int port);
 
-
     Q_INVOKABLE void refresh();
 
 private:
@@ -37,10 +36,12 @@ signals:
 
     void logsRefreshed(const QVariantList &logsList);
     void resultsRefreshed(const QVariantList &resultsList);
+    void blocksRefreshed(const QVariantList &blocksList);
 
 private slots:
     void onLogsReady();
     void onResultsReady();
+    void onBlocksReady();
 
 };
 

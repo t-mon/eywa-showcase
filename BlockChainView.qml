@@ -4,38 +4,17 @@ import QtQuick.Controls.Material 2.2
 import QtQuick.Layouts 1.3
 import QtCharts 2.2
 
-Page {
+import Eywa 1.0
+
+Item {
     id: root
-    header: ToolBar {
-
-        background: Rectangle {
-            implicitHeight: 40
-            color: "#888888"
-        }
-
-        RowLayout {
-            anchors.fill: parent
-
-            ToolButton {
-                text: qsTr("<")
-                onClicked: stackView.pop()
-            }
-
-            Label {
-                Layout.fillWidth: true
-                text: "Logs " + housHold.name
-            }
-        }
-    }
-
-
-    property var housHold: null
 
     ListView {
-        id: logsList
+        id: blocksList
         anchors.fill: parent
         clip: true
-        model: housHold.logEntriesProxy()
+
+        model: engine.blocksProxy
 
         delegate: ItemDelegate {
             width: parent.width
@@ -46,6 +25,10 @@ Page {
                 anchors.rightMargin: 20
                 anchors.verticalCenter: parent.verticalCenter
                 spacing: 20
+                Label {
+                    Layout.alignment: Qt.AlignCenter
+                    text: model.number
+                }
 
                 Label {
                     Layout.alignment: Qt.AlignCenter
@@ -55,20 +38,26 @@ Page {
                 ColumnLayout {
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignCenter
+                    //Rectangle { anchors.fill: parent; color: "blue"; opacity: 0.4 }
 
                     Label {
                         Layout.fillWidth: true
-
                         text: model.message
                     }
 
                     Label {
                         Layout.fillWidth: true
-                        text: model.messageType
+                        text: model.client
+                    }
+
+                    Label {
+                        Layout.fillWidth: true
+                        text: model.hash
                     }
 
                 }
             }
         }
     }
+
 }

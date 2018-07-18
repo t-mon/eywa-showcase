@@ -11,6 +11,8 @@ public:
     int timeStamp() const;
     void setTimeStamp(int timestamp);
 
+    QString timeString() const;
+
     QString message() const;
     void setMessage(const QString &message);
 

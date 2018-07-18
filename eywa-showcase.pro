@@ -6,10 +6,14 @@ HEADERS += \
     datamanager.h \
     houshold.h \
     dataseries.h \
-    logmessage.h \
     dataiteration.h \
     dataiterations.h \
-    logentry.h
+    logentry.h \
+    logentries.h \
+    logentriesproxy.h \
+    block.h \
+    blocks.h \
+    blocksproxy.h
 
 SOURCES += \
     main.cpp \
@@ -17,10 +21,14 @@ SOURCES += \
     datamanager.cpp \
     houshold.cpp \
     dataseries.cpp \
-    logmessage.cpp \
     dataiteration.cpp \
     dataiterations.cpp \
-    logentry.cpp
+    logentry.cpp \
+    logentries.cpp \
+    logentriesproxy.cpp \
+    block.cpp \
+    blocks.cpp \
+    blocksproxy.cpp
 
 RESOURCES += qml.qrc icons.qrc data.qrc
 

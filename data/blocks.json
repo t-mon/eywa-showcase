@@ -1,0 +1,26 @@
+[
+  {
+    "tstp": 1528622620000,
+    "client": "NetworkOperator",
+    "t": "block",
+    "msg": "Network Price Curve v1 (updateNetworkOperatorCurve)",
+    "num": 1,
+    "hash": "7f57fa393ede465251dabab7f5cad727ded65678"
+  },
+  {
+    "tstp": 1528622622000,
+    "client": "aWATTar",
+    "t": "block",
+    "msg": "aWATTar Prices Dayahead (updateEnergyPrice)",
+    "num": 2,
+    "hash": "f67eeaf14202525ebcacfeb58b7f56ff4ae1cd84"
+  },
+  {
+    "tstp": 1528622671000,
+    "client": "HH1",
+    "t": "block",
+    "msg": "HH1 Roadmap (updateRoadmap)",
+    "num": 3,
+    "hash": "4a3430f67cc997488f75fa321f92b30e4ea43d3d"
+  }
+]

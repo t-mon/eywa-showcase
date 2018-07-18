@@ -1,5 +1,7 @@
 #include "logentry.h"
 
+#include <QDateTime>
+
 LogEntry::LogEntry()
 {
 
@@ -13,6 +15,11 @@ int LogEntry::timeStamp() const
 void LogEntry::setTimeStamp(int timestamp)
 {
     m_timeStamp = timestamp;
+}
+
+QString LogEntry::timeString() const
+{
+    return QDateTime::fromTime_t(m_timeStamp).toString("dd.MM.yyyy hh:mm:ss");
 }
 
 QString LogEntry::message() const

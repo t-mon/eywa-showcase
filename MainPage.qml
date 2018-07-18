@@ -35,6 +35,9 @@ Page {
             TabButton {
                 text: qsTr("Grid")
             }
+            TabButton {
+                text: qsTr("Block chain")
+            }
         }
 
         SwipeView {
@@ -64,8 +67,12 @@ Page {
                 housholdNumber: 5
             }
 
-            GridView {
+            OverallView {
+                id: gridView
+            }
 
+            BlockChainView {
+                id: blockChainView
             }
         }
 
