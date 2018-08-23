@@ -16,6 +16,7 @@ Item {
     property QtObject houshold: engine.getHoushold(housholdNumber)
     property string name: houshold.name
 
+    antialiasing: settings.antiAliasing
 
     Flickable {
         id: flickable
@@ -52,10 +53,10 @@ Item {
                 animationDuration: engine.simulationSpeed
                 animationOptions: settings.animated ? ChartView.SeriesAnimations : ChartView.NoAnimation
                 animationEasingCurve.type: Easing.Linear
-
                 legend.visible: true
                 legend.alignment: Qt.AlignBottom
 
+                antialiasing: settings.antiAliasing
                 theme: ChartView.ChartThemeDark
 
                 ValueAxis {
@@ -300,7 +301,7 @@ Item {
                 animationOptions: settings.animated ? ChartView.SeriesAnimations : ChartView.NoAnimation
                 animationEasingCurve.type: Easing.Linear
 
-                antialiasing: true
+                antialiasing: settings.antiAliasing
 
                 ValueAxis {
                     id: energyAxis
@@ -713,7 +714,7 @@ Item {
                 animationOptions: settings.animated ? ChartView.SeriesAnimations : ChartView.NoAnimation
                 animationEasingCurve.type: Easing.Linear
 
-                antialiasing: true
+                antialiasing: settings.antiAliasing
 
                 ValueAxis {
                     id: temperatureAxis

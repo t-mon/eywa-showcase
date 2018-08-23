@@ -92,6 +92,16 @@ Page {
                         Layout.fillWidth: true;
                         Layout.columnSpan: 2
                     }
+
+                    CheckBox {
+                        id: antiAliasingCheckBox
+                        checked: settings.antiAliasing
+                        text: "Anti aliasing"
+                    }
+                    Item {
+                        Layout.fillWidth: true;
+                        Layout.columnSpan: 2
+                    }
                 }
 
             }
@@ -134,6 +144,9 @@ Page {
 
                 settings.dummyData = dummyDataCheckBox.checked
                 print("Settings: dummyData = " + settings.dummyData)
+
+                settings.antiAliasing = antiAliasingCheckBox.checked
+                print("Settings: antiAliasing = " + settings.antiAliasing)
 
                 stackView.pop()
             }

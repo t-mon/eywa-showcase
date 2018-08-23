@@ -33,7 +33,7 @@ Engine::Engine(QObject *parent) : QObject(parent)
     connect(m_timer, &QTimer::timeout, this, &Engine::onTick);
 
     // FIXME
-    m_dataManager->refresh();
+    //m_dataManager->refresh();
 }
 
 DataManager *Engine::dataManager()

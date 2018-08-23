@@ -21,7 +21,7 @@ Item {
         animationOptions: settings.animated ? ChartView.SeriesAnimations : ChartView.NoAnimation
         animationEasingCurve.type: Easing.Linear
 
-        antialiasing: true
+        antialiasing: settings.antiAliasing
 
         ValueAxis {
             id: energyAxis
