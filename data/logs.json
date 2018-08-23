@@ -1,164 +1,674 @@
 [
   {
-    "tstp": 1528373151923,
-    "client": "HH2",
-    "t": "msg",
-    "msg": "HH2 ready"
-  },
-  {
-    "tstp": 1528373151929,
-    "client": "HH2",
-    "t": "msg",
-    "msg": "Started optimizer"
-  },
-  {
-    "tstp": 1528373151929,
-    "client": "HH2",
-    "t": "msg",
-    "msg": "Loading configuration for optimizer"
-  },
-  {
-    "tstp": 1528373152028,
+    "tstp": 1534840167071,
     "client": "HH3",
-    "t": "msg",
-    "msg": "HH3 ready"
+    "l": "d",
+    "msg": "Client HH3 ready"
   },
   {
-    "tstp": 1528373152038,
-    "client": "HH5",
-    "t": "msg",
-    "msg": "HH5 ready"
-  },
-  {
-    "tstp": 1528373152044,
-    "client": "HH5",
-    "t": "msg",
-    "msg": "Started optimizer"
-  },
-  {
-    "tstp": 1528373152044,
-    "client": "HH3",
-    "t": "msg",
-    "msg": "Loading configuration for optimizer"
-  },
-  {
-    "tstp": 1528373152044,
-    "client": "HH3",
-    "t": "msg",
-    "msg": "Started optimizer"
-  },
-  {
-    "tstp": 1528373152044,
-    "client": "HH5",
-    "t": "msg",
-    "msg": "Loading configuration for optimizer"
-  },
-  {
-    "tstp": 1528373152081,
+    "tstp": 1534840167134,
     "client": "aWATTar",
-    "t": "msg",
-    "msg": "aWATTar ready"
+    "l": "d",
+    "msg": "Client aWATTar ready"
   },
   {
-    "tstp": 1528373152087,
+    "tstp": 1534840167217,
     "client": "HH4",
-    "t": "msg",
-    "msg": "HH4 ready"
+    "l": "d",
+    "msg": "Client HH4 ready"
   },
   {
-    "tstp": 1528373152093,
-    "client": "HH4",
-    "t": "msg",
-    "msg": "Loading configuration for optimizer"
-  },
-  {
-    "tstp": 1528373152093,
-    "client": "HH4",
-    "t": "msg",
-    "msg": "Started optimizer"
-  },
-  {
-    "tstp": 1528373152116,
+    "tstp": 1534840167236,
     "client": "HH1",
-    "t": "msg",
-    "msg": "HH1 ready"
+    "l": "d",
+    "msg": "Client HH1 ready"
   },
   {
-    "tstp": 1528373152140,
-    "client": "HH1",
-    "t": "msg",
-    "msg": "Loading configuration for optimizer"
-  },
-  {
-    "tstp": 1528373152140,
-    "client": "HH1",
-    "t": "msg",
-    "msg": "Started optimizer"
-  },
-  {
-    "tstp": 1528373152200,
+    "tstp": 1534840167261,
     "client": "NetworkOperator",
-    "t": "msg",
-    "msg": "NetworkOperator ready"
+    "l": "d",
+    "msg": "Client NetworkOperator ready"
   },
   {
-    "tstp": 1528373155309,
-    "client": "HH4",
-    "t": "msg",
-    "msg": "Optimizer finished"
-  },
-  {
-    "tstp": 1528373155370,
+    "tstp": 1534840167279,
     "client": "HH5",
-    "t": "msg",
-    "msg": "Optimizer finished"
+    "l": "d",
+    "msg": "Client HH5 ready"
   },
   {
-    "tstp": 1528373155537,
-    "client": "HH4",
-    "t": "msg",
-    "msg": "Daily total consumption: 42.434000000000005 kW"
+    "tstp": 1534840167288,
+    "client": "HH2",
+    "l": "d",
+    "msg": "Client HH2 ready"
   },
   {
-    "tstp": 1528373155538,
+    "tstp": 1534840172271,
+    "client": "HH1",
+    "l": "i",
+    "msg": "Loading configuration for optimizer"
+  },
+  {
+    "tstp": 1534840172271,
     "client": "HH5",
-    "t": "msg",
-    "msg": "Daily total consumption: 55.3738 kW"
+    "l": "i",
+    "msg": "Loading configuration for optimizer"
   },
   {
-    "tstp": 1528373155551,
-    "client": "HH1",
-    "t": "msg",
-    "msg": "Optimizer finished"
-  },
-  {
-    "tstp": 1528373155630,
-    "client": "HH1",
-    "t": "msg",
-    "msg": "Daily total consumption: 19.83970588235294 kW"
-  },
-  {
-    "tstp": 1528373155751,
-    "client": "HH3",
-    "t": "msg",
-    "msg": "Optimizer finished"
-  },
-  {
-    "tstp": 1528373155817,
-    "client": "HH3",
-    "t": "msg",
-    "msg": "Daily total consumption: 100.35323529411765 kW"
-  },
-  {
-    "tstp": 1528373155824,
+    "tstp": 1534840172271,
     "client": "HH2",
-    "t": "msg",
+    "l": "i",
+    "msg": "Loading configuration for optimizer"
+  },
+  {
+    "tstp": 1534840172272,
+    "client": "HH3",
+    "l": "i",
+    "msg": "Loading configuration for optimizer"
+  },
+  {
+    "tstp": 1534840172276,
+    "client": "HH4",
+    "l": "i",
+    "msg": "Loading configuration for optimizer"
+  },
+  {
+    "tstp": 1534840172745,
+    "client": "HH3",
+    "l": "i",
+    "msg": "Started optimizer round 1"
+  },
+  {
+    "tstp": 1534840172745,
+    "client": "HH4",
+    "l": "i",
+    "msg": "Started optimizer round 1"
+  },
+  {
+    "tstp": 1534840172745,
+    "client": "HH4",
+    "l": "i",
+    "msg": "Loading configuration for optimizer"
+  },
+  {
+    "tstp": 1534840172745,
+    "client": "HH5",
+    "l": "i",
+    "msg": "Started optimizer round 1"
+  },
+  {
+    "tstp": 1534840172745,
+    "client": "HH3",
+    "l": "i",
+    "msg": "Loading configuration for optimizer"
+  },
+  {
+    "tstp": 1534840172745,
+    "client": "HH5",
+    "l": "i",
+    "msg": "Loading configuration for optimizer"
+  },
+  {
+    "tstp": 1534840172755,
+    "client": "HH1",
+    "l": "i",
+    "msg": "Loading configuration for optimizer"
+  },
+  {
+    "tstp": 1534840172755,
+    "client": "HH1",
+    "l": "i",
+    "msg": "Started optimizer round 1"
+  },
+  {
+    "tstp": 1534840172764,
+    "client": "HH2",
+    "l": "i",
+    "msg": "Loading configuration for optimizer"
+  },
+  {
+    "tstp": 1534840172764,
+    "client": "HH2",
+    "l": "i",
+    "msg": "Started optimizer round 1"
+  },
+  {
+    "tstp": 1534840175926,
+    "client": "HH4",
+    "l": "i",
     "msg": "Optimizer finished"
   },
   {
-    "tstp": 1528373155876,
+    "tstp": 1534840176005,
+    "client": "HH4",
+    "l": "d",
+    "msg": "Daily total consumption: 54.869040000000005 kW"
+  },
+  {
+    "tstp": 1534840176006,
+    "client": "HH4",
+    "l": "i",
+    "msg": "Saving resultsHH4"
+  },
+  {
+    "tstp": 1534840176174,
     "client": "HH2",
-    "t": "msg",
-    "msg": "Daily total consumption: 26.53970588235294 kW"
+    "l": "i",
+    "msg": "Optimizer finished"
+  },
+  {
+    "tstp": 1534840176238,
+    "client": "HH2",
+    "l": "i",
+    "msg": "Saving resultsHH2"
+  },
+  {
+    "tstp": 1534840176238,
+    "client": "HH2",
+    "l": "d",
+    "msg": "Daily total consumption: 27.08350588235294 kW"
+  },
+  {
+    "tstp": 1534840176312,
+    "client": "HH5",
+    "l": "i",
+    "msg": "Optimizer finished"
+  },
+  {
+    "tstp": 1534840176381,
+    "client": "HH5",
+    "l": "i",
+    "msg": "Saving resultsHH5"
+  },
+  {
+    "tstp": 1534840176381,
+    "client": "HH5",
+    "l": "d",
+    "msg": "Daily total consumption: 94.86904 kW"
+  },
+  {
+    "tstp": 1534840176430,
+    "client": "HH1",
+    "l": "i",
+    "msg": "Optimizer finished"
+  },
+  {
+    "tstp": 1534840176484,
+    "client": "HH1",
+    "l": "d",
+    "msg": "Daily total consumption: 22.383505882352942 kW"
+  },
+  {
+    "tstp": 1534840176484,
+    "client": "HH1",
+    "l": "i",
+    "msg": "Saving resultsHH1"
+  },
+  {
+    "tstp": 1534840176510,
+    "client": "HH3",
+    "l": "i",
+    "msg": "Optimizer finished"
+  },
+  {
+    "tstp": 1534840176531,
+    "client": "HH3",
+    "l": "d",
+    "msg": "Daily total consumption: 102.52843529411766 kW"
+  },
+  {
+    "tstp": 1534840176531,
+    "client": "HH3",
+    "l": "i",
+    "msg": "Saving resultsHH3"
+  },
+  {
+    "tstp": 1534840178534,
+    "client": "HH2",
+    "l": "i",
+    "msg": "Loading configuration for optimizer"
+  },
+  {
+    "tstp": 1534840178534,
+    "client": "HH4",
+    "l": "i",
+    "msg": "Loading configuration for optimizer"
+  },
+  {
+    "tstp": 1534840178534,
+    "client": "HH2",
+    "l": "i",
+    "msg": "Started optimizer round 2"
+  },
+  {
+    "tstp": 1534840178535,
+    "client": "HH4",
+    "l": "i",
+    "msg": "Started optimizer round 2"
+  },
+  {
+    "tstp": 1534840178535,
+    "client": "HH5",
+    "l": "i",
+    "msg": "Loading configuration for optimizer"
+  },
+  {
+    "tstp": 1534840178536,
+    "client": "HH5",
+    "l": "i",
+    "msg": "Started optimizer round 2"
+  },
+  {
+    "tstp": 1534840178545,
+    "client": "HH1",
+    "l": "i",
+    "msg": "Loading configuration for optimizer"
+  },
+  {
+    "tstp": 1534840178545,
+    "client": "HH1",
+    "l": "i",
+    "msg": "Started optimizer round 2"
+  },
+  {
+    "tstp": 1534840178562,
+    "client": "HH3",
+    "l": "i",
+    "msg": "Loading configuration for optimizer"
+  },
+  {
+    "tstp": 1534840178562,
+    "client": "HH3",
+    "l": "i",
+    "msg": "Started optimizer round 2"
+  },
+  {
+    "tstp": 1534840182338,
+    "client": "HH3",
+    "l": "i",
+    "msg": "Optimizer finished"
+  },
+  {
+    "tstp": 1534840182435,
+    "client": "HH2",
+    "l": "i",
+    "msg": "Optimizer finished"
+  },
+  {
+    "tstp": 1534840182448,
+    "client": "HH3",
+    "l": "d",
+    "msg": "Daily total consumption: 102.52843529411766 kW"
+  },
+  {
+    "tstp": 1534840182448,
+    "client": "HH3",
+    "l": "i",
+    "msg": "Saving resultsHH3"
+  },
+  {
+    "tstp": 1534840182471,
+    "client": "HH4",
+    "l": "i",
+    "msg": "Optimizer finished"
+  },
+  {
+    "tstp": 1534840182542,
+    "client": "HH2",
+    "l": "i",
+    "msg": "Saving resultsHH2"
+  },
+  {
+    "tstp": 1534840182542,
+    "client": "HH2",
+    "l": "d",
+    "msg": "Daily total consumption: 27.08350588235294 kW"
+  },
+  {
+    "tstp": 1534840182590,
+    "client": "HH1",
+    "l": "i",
+    "msg": "Optimizer finished"
+  },
+  {
+    "tstp": 1534840182623,
+    "client": "HH4",
+    "l": "d",
+    "msg": "Daily total consumption: 48.869040000000005 kW"
+  },
+  {
+    "tstp": 1534840182623,
+    "client": "HH4",
+    "l": "i",
+    "msg": "Saving resultsHH4"
+  },
+  {
+    "tstp": 1534840182653,
+    "client": "HH1",
+    "l": "i",
+    "msg": "Saving resultsHH1"
+  },
+  {
+    "tstp": 1534840182653,
+    "client": "HH1",
+    "l": "d",
+    "msg": "Daily total consumption: 20.383505882352942 kW"
+  },
+  {
+    "tstp": 1534840182787,
+    "client": "HH5",
+    "l": "i",
+    "msg": "Optimizer finished"
+  },
+  {
+    "tstp": 1534840182830,
+    "client": "HH5",
+    "l": "d",
+    "msg": "Daily total consumption: 94.86904 kW"
+  },
+  {
+    "tstp": 1534840182830,
+    "client": "HH5",
+    "l": "i",
+    "msg": "Saving resultsHH5"
+  },
+  {
+    "tstp": 1534840184834,
+    "client": "HH5",
+    "l": "i",
+    "msg": "Loading configuration for optimizer"
+  },
+  {
+    "tstp": 1534840184835,
+    "client": "HH2",
+    "l": "i",
+    "msg": "Loading configuration for optimizer"
+  },
+  {
+    "tstp": 1534840184835,
+    "client": "HH5",
+    "l": "i",
+    "msg": "Started optimizer round 3"
+  },
+  {
+    "tstp": 1534840184835,
+    "client": "HH2",
+    "l": "i",
+    "msg": "Started optimizer round 3"
+  },
+  {
+    "tstp": 1534840184836,
+    "client": "HH4",
+    "l": "i",
+    "msg": "Loading configuration for optimizer"
+  },
+  {
+    "tstp": 1534840184836,
+    "client": "HH3",
+    "l": "i",
+    "msg": "Loading configuration for optimizer"
+  },
+  {
+    "tstp": 1534840184836,
+    "client": "HH4",
+    "l": "i",
+    "msg": "Started optimizer round 3"
+  },
+  {
+    "tstp": 1534840184836,
+    "client": "HH3",
+    "l": "i",
+    "msg": "Started optimizer round 3"
+  },
+  {
+    "tstp": 1534840184836,
+    "client": "HH1",
+    "l": "i",
+    "msg": "Loading configuration for optimizer"
+  },
+  {
+    "tstp": 1534840184836,
+    "client": "HH1",
+    "l": "i",
+    "msg": "Started optimizer round 3"
+  },
+  {
+    "tstp": 1534840188124,
+    "client": "HH1",
+    "l": "i",
+    "msg": "Optimizer finished"
+  },
+  {
+    "tstp": 1534840188232,
+    "client": "HH4",
+    "l": "i",
+    "msg": "Optimizer finished"
+  },
+  {
+    "tstp": 1534840188255,
+    "client": "HH1",
+    "l": "d",
+    "msg": "Daily total consumption: 22.383505882352942 kW"
+  },
+  {
+    "tstp": 1534840188257,
+    "client": "HH1",
+    "l": "i",
+    "msg": "Saving resultsHH1"
+  },
+  {
+    "tstp": 1534840188356,
+    "client": "HH4",
+    "l": "d",
+    "msg": "Daily total consumption: 54.869040000000005 kW"
+  },
+  {
+    "tstp": 1534840188356,
+    "client": "HH4",
+    "l": "i",
+    "msg": "Saving resultsHH4"
+  },
+  {
+    "tstp": 1534840188441,
+    "client": "HH3",
+    "l": "i",
+    "msg": "Optimizer finished"
+  },
+  {
+    "tstp": 1534840188491,
+    "client": "HH3",
+    "l": "i",
+    "msg": "Saving resultsHH3"
+  },
+  {
+    "tstp": 1534840188491,
+    "client": "HH3",
+    "l": "d",
+    "msg": "Daily total consumption: 102.52843529411766 kW"
+  },
+  {
+    "tstp": 1534840188589,
+    "client": "HH2",
+    "l": "i",
+    "msg": "Optimizer finished"
+  },
+  {
+    "tstp": 1534840188652,
+    "client": "HH2",
+    "l": "d",
+    "msg": "Daily total consumption: 27.08350588235294 kW"
+  },
+  {
+    "tstp": 1534840188652,
+    "client": "HH2",
+    "l": "i",
+    "msg": "Saving resultsHH2"
+  },
+  {
+    "tstp": 1534840188687,
+    "client": "HH5",
+    "l": "i",
+    "msg": "Optimizer finished"
+  },
+  {
+    "tstp": 1534840188703,
+    "client": "HH5",
+    "l": "i",
+    "msg": "Saving resultsHH5"
+  },
+  {
+    "tstp": 1534840188703,
+    "client": "HH5",
+    "l": "d",
+    "msg": "Daily total consumption: 94.86904 kW"
+  },
+  {
+    "tstp": 1534840190707,
+    "client": "HH4",
+    "l": "i",
+    "msg": "Started optimizer round 4"
+  },
+  {
+    "tstp": 1534840190707,
+    "client": "HH1",
+    "l": "i",
+    "msg": "Started optimizer round 4"
+  },
+  {
+    "tstp": 1534840190707,
+    "client": "HH2",
+    "l": "i",
+    "msg": "Loading configuration for optimizer"
+  },
+  {
+    "tstp": 1534840190707,
+    "client": "HH3",
+    "l": "i",
+    "msg": "Loading configuration for optimizer"
+  },
+  {
+    "tstp": 1534840190707,
+    "client": "HH3",
+    "l": "i",
+    "msg": "Started optimizer round 4"
+  },
+  {
+    "tstp": 1534840190707,
+    "client": "HH1",
+    "l": "i",
+    "msg": "Loading configuration for optimizer"
+  },
+  {
+    "tstp": 1534840190707,
+    "client": "HH2",
+    "l": "i",
+    "msg": "Started optimizer round 4"
+  },
+  {
+    "tstp": 1534840190707,
+    "client": "HH4",
+    "l": "i",
+    "msg": "Loading configuration for optimizer"
+  },
+  {
+    "tstp": 1534840190710,
+    "client": "HH5",
+    "l": "i",
+    "msg": "Loading configuration for optimizer"
+  },
+  {
+    "tstp": 1534840190710,
+    "client": "HH5",
+    "l": "i",
+    "msg": "Started optimizer round 4"
+  },
+  {
+    "tstp": 1534840194453,
+    "client": "HH3",
+    "l": "i",
+    "msg": "Optimizer finished"
+  },
+  {
+    "tstp": 1534840194506,
+    "client": "HH3",
+    "l": "i",
+    "msg": "Saving resultsHH3"
+  },
+  {
+    "tstp": 1534840194506,
+    "client": "HH3",
+    "l": "d",
+    "msg": "Daily total consumption: 102.52843529411766 kW"
+  },
+  {
+    "tstp": 1534840195055,
+    "client": "HH1",
+    "l": "i",
+    "msg": "Optimizer finished"
+  },
+  {
+    "tstp": 1534840195111,
+    "client": "HH5",
+    "l": "i",
+    "msg": "Optimizer finished"
+  },
+  {
+    "tstp": 1534840195112,
+    "client": "HH1",
+    "l": "d",
+    "msg": "Daily total consumption: 20.383505882352942 kW"
+  },
+  {
+    "tstp": 1534840195112,
+    "client": "HH1",
+    "l": "i",
+    "msg": "Saving resultsHH1"
+  },
+  {
+    "tstp": 1534840195155,
+    "client": "HH5",
+    "l": "d",
+    "msg": "Daily total consumption: 94.86904 kW"
+  },
+  {
+    "tstp": 1534840195155,
+    "client": "HH5",
+    "l": "i",
+    "msg": "Saving resultsHH5"
+  },
+  {
+    "tstp": 1534840195433,
+    "client": "HH4",
+    "l": "i",
+    "msg": "Optimizer finished"
+  },
+  {
+    "tstp": 1534840195439,
+    "client": "HH2",
+    "l": "i",
+    "msg": "Optimizer finished"
+  },
+  {
+    "tstp": 1534840195456,
+    "client": "HH4",
+    "l": "d",
+    "msg": "Daily total consumption: 48.869040000000005 kW"
+  },
+  {
+    "tstp": 1534840195457,
+    "client": "HH4",
+    "l": "i",
+    "msg": "Saving resultsHH4"
+  },
+  {
+    "tstp": 1534840195462,
+    "client": "HH2",
+    "l": "d",
+    "msg": "Daily total consumption: 27.08350588235294 kW"
+  },
+  {
+    "tstp": 1534840195462,
+    "client": "HH2",
+    "l": "i",
+    "msg": "Saving resultsHH2"
   }
 ]
