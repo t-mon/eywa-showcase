@@ -7,7 +7,7 @@ import QtCharts 2.2
 Page {
     id: root
 
-    Component.onCompleted: engine.dataManager.refresh()
+    Component.onCompleted: engine.dataManager.refresh(settings.dummyData)
 
     ColumnLayout {
         anchors.fill: parent

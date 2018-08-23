@@ -36,7 +36,7 @@ void DataManager::setPort(int port)
 void DataManager::refresh(bool dummyData)
 {
     if (dummyData) {
-        qDebug() << "DataManager: refresh dummy data" << m_hostAddress << m_port;
+        qDebug() << "DataManager: refresh dummy data from resouces";
         QVariantList logsList = loadJsonFile(":/data/logs.json").toList();
         qDebug() << logsList;
         emit logsRefreshed(logsList);
