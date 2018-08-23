@@ -9,64 +9,63 @@ import Eywa 1.0
 Item {
     id: root
 
-    Flickable {
-        id: flickable
+    ChartView {
+        id: chartView2
         anchors.fill: parent
-        contentHeight: gridColumn.height
-        clip: true
+        legend.visible: true
+        legend.alignment: Qt.AlignBottom
 
-        ColumnLayout {
-            id: gridColumn
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.top: parent.top
+        theme: ChartView.ChartThemeDark
 
-            Label { text: "Grid" }
+        animationDuration: engine.simulationSpeed
+        animationOptions: settings.animated ? ChartView.SeriesAnimations : ChartView.NoAnimation
+        animationEasingCurve.type: Easing.Linear
 
+        antialiasing: true
 
+        ValueAxis {
+            id: energyAxis
+            min: -20
+            max: 50
+            titleText: "Energie [kW]"
+            gridVisible: false
+            labelFormat: "%i"
         }
 
+        ValueAxis {
+            id: timeAxis2
+            min: 0
+            max: 23
+            tickCount: 10
+            labelFormat: "%i"
+        }
 
-        //        }
+        LineSeries {
+            id: gesamtverbrauchSeries
+            name: "Gesamtverbrauch"
+            axisX: timeAxis2
+            axisY: energyAxis
 
-        //        // Summe aus alles haushalten von "Gesamtverbrauch [kW]" (Column W)
+            width: 3
+            color: "red"
 
-        //        // TODO: iteration wechseln und volle grafik sehen
+            property QtObject dataSeries: null
 
-        ////        //============================================================================================================
-        ////        ChartView {
-        ////            id: chartView2
-        ////            Layout.preferredHeight: flickable.height / 2
-        ////            Layout.fillWidth: true
+            Connections {
+                target: gesamtverbrauchSeries.dataSeries
+                onDataChanged: {
+                    gesamtverbrauchSeries.append(x, y)
+                }
+            }
 
-        ////            legend.visible: true
-        ////            legend.alignment: Qt.AlignBottom
-
-        ////            theme: ChartView.ChartThemeDark
-
-        ////            animationDuration: engine.simulationSpeed
-        ////            animationOptions: settings.animated ? ChartView.SeriesAnimations : ChartView.NoAnimation
-        ////            animationEasingCurve.type: Easing.Linear
-
-        ////            antialiasing: true
-
-        ////            ValueAxis {
-        ////                id: energyAxis
-        ////                min: -4
-        ////                max: 12
-        ////                titleText: "Energie [kW]"
-        ////                gridVisible: false
-        ////                labelFormat: "%i"
-        ////            }
-
-        ////            ValueAxis {
-        ////                id: timeAxis2
-        ////                min: 0
-        ////                max: 23
-        ////                tickCount: 10
-        ////                labelFormat: "%i"
-        ////            }
-        ////        }
-        //    }
+            Connections {
+                target: engine
+                onReset: gesamtverbrauchSeries.clear()
+                onCurrentIterationChanged: {
+                    gesamtverbrauchSeries.dataSeries = engine.getGridDataSeries(engine.currentIteration)
+                }
+            }
+        }
     }
 }
+

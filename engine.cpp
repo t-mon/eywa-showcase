@@ -107,6 +107,16 @@ Houshold *Engine::getHoushold(int number)
     return nullptr;
 }
 
+DataSeries *Engine::getGridDataSeries(int iterationNumber) const
+{
+    foreach (DataIteration *iteration, m_gridIterations) {
+        if (iteration->iterationNumber() == iterationNumber) {
+            return iteration->dataSeries().first();
+        }
+    }
+    return nullptr;
+}
+
 
 void Engine::setTimeSlot(int timeSlot)
 {
@@ -154,6 +164,16 @@ void Engine::onTick()
         houshold->setTimeSlot(m_timeSlot);
     }
 
+    foreach (DataIteration *iteration, m_gridIterations) {
+        for (int column = 0; column < iteration->dataSeries().count(); column++) {
+
+            Q_ASSERT(column < iteration->dataSeries().count());
+
+            DataSeries *series = iteration->dataSeries().at(column);
+            series->setCurrentValue(m_timeSlot);
+        }
+    }
+
     emit tick(m_timeSlot);
 
     if (m_running) {
@@ -198,6 +218,9 @@ void Engine::onResultsReady(const QVariantList &resultsList)
     foreach (Houshold *houshold, m_housHolds) {
         houshold->reset();
     }
+
+    qDeleteAll(m_gridIterations);
+    m_gridIterations.clear();
 
     stop();
 
@@ -321,6 +344,24 @@ void Engine::onResultsReady(const QVariantList &resultsList)
     m_iterationCount = iterationCount;
     qDebug() << "Interation count changed" << m_iterationCount;
     emit iterationCountChanged(m_iterationCount);
+
+    // Create grid data for each iteration
+    for (int i = 0; i < m_iterationCount; i++) {
+        int iterationNumber = i + 1;
+        DataIteration *iteration = new DataIteration(iterationNumber, this);
+        int dataCount = m_houshold1->getDataSeries(iterationNumber, "Gesamtverbrauch [kW]")->values().count();
+        DataSeries *gridDataSeries = new DataSeries(iteration);
+        for (int x = 0; x < dataCount; x++) {
+            int sum = 0;
+            foreach (Houshold *houshold, m_housHolds) {
+                DataSeries *totalConsumptionHousholdSeries = houshold->getDataSeries(iterationNumber, "Gesamtverbrauch [kW]");
+                sum += totalConsumptionHousholdSeries->getValue(x);
+            }
+            gridDataSeries->appendValue(sum);
+        }
+        iteration->setDataSeries( {gridDataSeries} );
+        m_gridIterations.append(iteration);
+    }
 }
 
 void Engine::onBlocksReady(const QVariantList &blocksList)

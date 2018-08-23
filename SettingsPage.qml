@@ -83,7 +83,15 @@ Page {
                         Layout.columnSpan: 2
                     }
 
-
+                    CheckBox {
+                        id: dummyDataCheckBox
+                        checked: settings.dummyData
+                        text: "Dummy data"
+                    }
+                    Item {
+                        Layout.fillWidth: true;
+                        Layout.columnSpan: 2
+                    }
                 }
 
             }
@@ -124,6 +132,8 @@ Page {
                 settings.animated = animationCheckBox.checked
                 print("Settings: animated = " + settings.animated)
 
+                settings.dummyData = dummyDataCheckBox.checked
+                print("Settings: dummyData = " + settings.dummyData)
 
                 stackView.pop()
             }

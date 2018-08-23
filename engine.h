@@ -39,6 +39,7 @@ public:
     void setCurrentIteration(int iteration);
 
     Q_INVOKABLE Houshold *getHoushold(int number);
+    Q_INVOKABLE DataSeries *getGridDataSeries(int iterationNumber) const;
 
 
 private:
@@ -51,6 +52,8 @@ private:
     Houshold *m_houshold3 = nullptr;
     Houshold *m_houshold4 = nullptr;
     Houshold *m_houshold5 = nullptr;
+
+    QList<DataIteration *> m_gridIterations;
 
     Blocks *m_blocks = nullptr;
     BlocksProxy *m_blocksProxy = nullptr;

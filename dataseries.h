@@ -25,6 +25,8 @@ public:
     QList<double> values() const;
     void setValues(const QList<double> &values);
 
+    void appendValue(double value);
+
     Q_INVOKABLE double getValue(int timeSlot);
 
     void setCurrentValue(int timeSlot);

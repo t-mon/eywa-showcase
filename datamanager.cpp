@@ -8,22 +8,6 @@
 DataManager::DataManager(QObject *parent) : QObject(parent)
 {
     m_networkManager = new QNetworkAccessManager(this);
-
-
-    // curl -XGET http://192.168.0.183:8080/logs
-
-    // logs für jeden haushalt, i info (fett), d debug(normal)
-
-    //    {
-    //      "tstp": 1528373936499,
-    //      "client": "HH2",
-    //      "l": "i",
-    //      "msg": "Daily total consumption: 26.53970588235294 kW"
-    //    }
-
-    // Iteration 0 (ausgangssituation)
-    // 3 Iterationen (für jeden haushalt für jeden tag)
-
 }
 
 QString DataManager::hostAddress() const
@@ -49,50 +33,44 @@ void DataManager::setPort(int port)
     emit portChanged();
 }
 
-void DataManager::refresh()
+void DataManager::refresh(bool dummyData)
 {
-    // Dummy data
+    if (dummyData) {
+        qDebug() << "DataManager: refresh dummy data" << m_hostAddress << m_port;
+        QVariantList logsList = loadJsonFile(":/data/logs.json").toList();
+        qDebug() << logsList;
+        emit logsRefreshed(logsList);
 
-    QVariantList logsList = loadJsonFile(":/data/logs.json").toList();
-    qDebug() << logsList;
-    emit logsRefreshed(logsList);
+        QVariantList resultsList = loadJsonFile(":/data/results.json").toList();
+        qDebug() << resultsList;
+        emit resultsRefreshed(resultsList);
 
-    QVariantList resultsList = loadJsonFile(":/data/results.json").toList();
-    qDebug() << resultsList;
-    emit resultsRefreshed(resultsList);
+        QVariantList blocksList = loadJsonFile(":/data/blocks.json").toList();
+        qDebug() << blocksList;
+        emit blocksRefreshed(blocksList);
+    } else {
+        qDebug() << "DataManager: refresh data" << m_hostAddress << m_port;
 
-    QVariantList blocksList = loadJsonFile(":/data/blocks.json").toList();
-    qDebug() << blocksList;
-    emit blocksRefreshed(blocksList);
+        QUrl url;
+        url.setScheme("http");
+        url.setHost(m_hostAddress);
+        url.setPort(m_port);
 
+        // Load logs
+        url.setPath("/logs");
+        QNetworkReply *reply = m_networkManager->get(QNetworkRequest(url));
+        connect(reply, &QNetworkReply::finished, this, &DataManager::onLogsReady);
 
+        // Results logs
+        url.setPath("/results");
+        reply = m_networkManager->get(QNetworkRequest(url));
+        connect(reply, &QNetworkReply::finished, this, &DataManager::onResultsReady);
 
-    //    qDebug() << "DataManager: refresh data" << m_hostAddress << m_port;
-
-    //    QUrl url;
-    //    url.setScheme("http");
-    //    url.setHost(m_hostAddress);
-    //    url.setPort(m_port);
-
-    //    // Load logs
-    //    url.setPath("/logs");
-    //    QNetworkReply *reply = m_networkManager->get(QNetworkRequest(url));
-    //    connect(reply, &QNetworkReply::finished, this, &DataManager::onLogsReady);
-
-//        // Results logs
-//        url.setPath("/results");
-//        reply = m_networkManager->get(QNetworkRequest(url));
-//        connect(reply, &QNetworkReply::finished, this, &DataManager::onResultsReady);
-
-//        // Blocks logs
-//        url.setPath("/blocks");
-//        reply = m_networkManager->get(QNetworkRequest(url));
-//        connect(reply, &QNetworkReply::finished, this, &DataManager::onResultsReady);
-
-
-    // Blocks
-    // TODO
-
+        // Blocks blocks
+        url.setPath("/blocks");
+        reply = m_networkManager->get(QNetworkRequest(url));
+        connect(reply, &QNetworkReply::finished, this, &DataManager::onBlocksReady);
+    }
 }
 
 QVariant DataManager::loadJsonFile(const QString &fileName)

@@ -50,6 +50,11 @@ void DataSeries::setValues(const QList<double> &values)
     m_values = values;
 }
 
+void DataSeries::appendValue(double value)
+{
+    m_values.append(value);
+}
+
 double DataSeries::getValue(int timeSlot)
 {
     if (timeSlot >= m_values.count() || timeSlot < 0) {

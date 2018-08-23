@@ -20,7 +20,7 @@ public:
     int port() const;
     void setPort(int port);
 
-    Q_INVOKABLE void refresh();
+    Q_INVOKABLE void refresh(bool dummyData = true);
 
 private:
     QNetworkAccessManager *m_networkManager = nullptr;

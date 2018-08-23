@@ -26,6 +26,7 @@ ApplicationWindow {
         property int simulationSpeed: 500
         property bool fullscreen: true
         property bool animated: true
+        property bool dummyData: true
 
         onSimulationSpeedChanged: engine.simulationSpeed = simulationSpeed
         onOptimizerHostChanged: engine.dataManager.hostAddress = settings.optimizerHost

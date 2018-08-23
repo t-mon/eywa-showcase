@@ -16,6 +16,7 @@ Item {
     property QtObject houshold: engine.getHoushold(housholdNumber)
     property string name: houshold.name
 
+
     Flickable {
         id: flickable
         anchors.fill: parent
@@ -40,6 +41,8 @@ Item {
             }
 
 
+
+
             //============================================================================================================
             ChartView {
                 id: chartView
@@ -55,12 +58,10 @@ Item {
 
                 theme: ChartView.ChartThemeDark
 
-                //                antialiasing: true
-
                 ValueAxis {
                     id: timeAxis
                     min: 0
-                    max: 24
+                    max: 23
                     tickCount: 12
                     labelFormat: "%i"
                 }

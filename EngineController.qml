@@ -96,7 +96,7 @@ Item {
 
             MouseArea {
                 anchors.fill: parent
-                onClicked: engine.dataManager.refresh()
+                onClicked: engine.dataManager.refresh(settings.dummyData)
 
             }
         }
