@@ -107,16 +107,16 @@ Houshold *Engine::getHoushold(int number)
     return nullptr;
 }
 
-DataSeries *Engine::getGridDataSeries(int iterationNumber) const
+DataSeries *Engine::getGridDataSeries(int iterationNumber)
 {
     foreach (DataIteration *iteration, m_gridIterations) {
         if (iteration->iterationNumber() == iterationNumber) {
             return iteration->dataSeries().first();
         }
     }
+
     return nullptr;
 }
-
 
 void Engine::setTimeSlot(int timeSlot)
 {
@@ -203,7 +203,6 @@ void Engine::onLogsReady(const QVariantList &logsList)
         int housholdNumber = logMap.value("client").toString().remove("HH").toInt();
 
         Houshold *housHold = getHoushold(housholdNumber);
-
         if (!housHold) {
             qWarning() << "Could not find houshold for log" << logMap;
             continue;
@@ -236,7 +235,6 @@ void Engine::onResultsReady(const QVariantList &resultsList)
 
         qDebug() << "-----------------------------------------";
         DataIteration *iteration = new DataIteration(iterationNumber, this);
-
 
         qDebug() << "Parsing data for houshold" << housHoldNumber << "iteration:" << iterationNumber;
         QVariantMap valuesMap = resultMap.value("values").toMap();
@@ -279,7 +277,6 @@ void Engine::onResultsReady(const QVariantList &resultsList)
         } else {
             qWarning() << "Could not find Energiepreis [€/kWh] or Netzpreis [€/kWh] series";
         }
-
 
         DataSeries *housholdSeries = findDataSeries("Nicht steuerbar [kW]", dataSeriesList);
         DataSeries *ecarSeries = findDataSeries("Verbrauch E-Auto [kW]", dataSeriesList);
@@ -362,6 +359,8 @@ void Engine::onResultsReady(const QVariantList &resultsList)
         iteration->setDataSeries( {gridDataSeries} );
         m_gridIterations.append(iteration);
     }
+
+    emit initialized();
 }
 
 void Engine::onBlocksReady(const QVariantList &blocksList)

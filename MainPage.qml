@@ -16,6 +16,7 @@ Page {
             id: bar
             width: parent.width
             Layout.fillWidth: true
+            currentIndex: swipeView.currentIndex
 
             TabButton {
                 text: qsTr("Haushalt 1")

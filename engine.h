@@ -39,8 +39,7 @@ public:
     void setCurrentIteration(int iteration);
 
     Q_INVOKABLE Houshold *getHoushold(int number);
-    Q_INVOKABLE DataSeries *getGridDataSeries(int iterationNumber) const;
-
+    Q_INVOKABLE DataSeries *getGridDataSeries(int iterationNumber);
 
 private:
     QTimer *m_timer = nullptr;
@@ -82,6 +81,7 @@ signals:
     void iterationCountChanged(int iterationCount);
     void currentIterationChanged(int iteration);
 
+    void initialized();
     void tick(int timeSlot);
     void reset();
 
